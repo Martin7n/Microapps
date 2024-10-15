@@ -2,10 +2,13 @@ from gui_renamer_func import file_rename
 import FreeSimpleGUI as sg
 import os
 
+from ocr_test_tabula.optimal_info import pdf_to_excel_min
+from rename_by_ocr import ocr_file_renamer
+from vars import path_to_file
+
 label_1= "Select start folder"
 folder_input = sg.Input(default_text='C:\\ren\\')
 files_btn = sg.FolderBrowse("Add pdf folder", key="startfolder")
-
 
 
 label_3 = "Select registry file"
@@ -33,12 +36,16 @@ while True:
 
     filepaths = values['startfolder']
     reg_file = values['reg_file']
-    # print(f"StartFolder {filepaths} reg_file ==> {reg_file}")
+    print(f"StartFolder {filepaths} reg_file ==> {reg_file}")
 
-    x_files = file_rename(filepaths, reg_file)
-
-    status_label.update(value=f"Rename completed: {x_files} renamed")
+    # x_files = file_rename(filepaths, reg_file)
+    ocr_file_renamer(filepaths, reg_file)
+    # status_label.update(value=f"Rename completed: {x_files} renamed")
 
 
 
 window.close()
+
+
+if __name__ == "__main__":
+    pass

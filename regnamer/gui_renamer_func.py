@@ -5,10 +5,10 @@ import openpyxl
 from openpyxl import Workbook
 
 def file_rename(filepaths,  reg_file):
+
     try:
 
         files_in_directory = os.listdir(filepaths)
-        # reg_file = "C:/ren/ren/reg.xlsx"
         reg_file = reg_file
         wb_obj = openpyxl.load_workbook(reg_file)
         sheet_obj = wb_obj.active

@@ -4,3 +4,10 @@ regnamer/requirments.txt
 regnamer/__pycache__/vars.cpython-311.pyc
 regnamer/patterns.py
 regnamer/vars.py
+regnamer/__pycache__/file_feeder.cpython-311.pyc
+regnamer/__pycache__/gui_renamer.cpython-311.pyc
+regnamer/file_feeder.py
+/regnamer/__pycache__
+regnamer/py_pdf2_test/matched.txt
+regnamer/py_pdf2_test/new.txt
+/regnamer/ocr_test_tabula/__pycache__
