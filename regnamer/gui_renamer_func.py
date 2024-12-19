@@ -38,7 +38,7 @@ def file_rename(filepaths,  reg_file):
                 new_file = filepaths + "//" + new_name
 
                 os.rename(old_file, new_file)
-                with open("new.txt", "a") as file:
+                with open("work_done.txt", "a") as file:
                     file.writelines(f"{name}, {new_name}")
         return count
     except Exception:

@@ -124,7 +124,7 @@ def renaming_files(filepaths, reg_file, pdf_registry, convention_registry):
 
         print(new_file, old_file)
         # os.rename(old_file, new_file)
-        with open("new.txt", "a") as file:
+        with open("work_done.txt", "a") as file:
             file.writelines(f"{new_file}, {old_file}")
 
 
