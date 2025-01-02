@@ -35,5 +35,5 @@ def file_index(path_to_dir):
 
 
 if __name__ == '__main__':
-    print(file_index('C:\\Users\\M\\PycharmProjects\\Microapps'))
+    print(file_index('C:\\Users\\'))
 
