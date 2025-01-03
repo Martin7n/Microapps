@@ -51,9 +51,7 @@ def file_index(path_to_dir, filetypes:bool):
 
 
 def file_writer(path, found, name, size, type):
-    wb = openpyxl.Workbook()
-    sheet = wb.active
+    pass
 
 if __name__ == '__main__':
-    print(file_index('C:\\Users\\'))
-
+    pass
