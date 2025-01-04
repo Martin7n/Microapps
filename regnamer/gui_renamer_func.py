@@ -25,7 +25,7 @@ def file_rename(filepaths,  reg_file):
             names.append(file)
 
         count = 0
-        #updated for short regs
+
 
         #error log
         wb = openpyxl.Workbook()
@@ -35,9 +35,11 @@ def file_rename(filepaths,  reg_file):
 
         for name in names:
             search_pattern = name[:8]
+            # updated for short regs
             if search_pattern[-1]=="_":
                 search_pattern= search_pattern[:7]
                 # print(search_pattern)
+            # updated for short regs end
                 if search_pattern in register:
                     new_name = register[search_pattern] + "_" + name
                     count += 1
@@ -51,12 +53,14 @@ def file_rename(filepaths,  reg_file):
                     os.rename(old_file, new_file)
                     with open("work_done.txt", "a") as file:
                         file.writelines(f"{name}, {new_name}")
+            # error log
             else:
                 not_renamed +=1
                 sheet.cell(row=not_renamed, column=1).value = name
 
             wb.save('error_files.xlsx')
             wb.close()
+            # error log
 
         return count
     except Exception:
