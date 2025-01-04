@@ -15,7 +15,8 @@ def file_rename(filepaths,  reg_file):
         max_row = sheet_obj.max_row
         register = {}
         for row in sheet_obj.iter_rows(min_row=2, max_col=4, max_row=max_row):
-            appendix = str(row[0].value) + row[1].value + str(row[2].value)
+            # appendix = str(row[0].value) + row[1].value + str(row[2].value)
+            appendix = str(row[1].value)
             reg = row[3].value
             register[reg] = appendix
 
@@ -24,22 +25,25 @@ def file_rename(filepaths,  reg_file):
             names.append(file)
 
         count = 0
+        #updated for short regs
         for name in names:
             search_pattern = name[:8]
-            # print(search_pattern)
-            if search_pattern in register:
-                new_name = register[search_pattern] + "_" + name
-                count += 1
-                # print(new_name)
-                # old_file = os.path.join(directory_path, name)
-                # new_file = os.path.join(directory_path, new_name)
+            if search_pattern[-1]=="_":
+                search_pattern= search_pattern[:7]
+                # print(search_pattern)
+                if search_pattern in register:
+                    new_name = register[search_pattern] + "_" + name
+                    count += 1
+                    # print(new_name)
+                    # old_file = os.path.join(directory_path, name)
+                    # new_file = os.path.join(directory_path, new_name)
 
-                old_file = filepaths + "//" + name
-                new_file = filepaths + "//" + new_name
+                    old_file = filepaths + "//" + name
+                    new_file = filepaths + "//" + new_name
 
-                os.rename(old_file, new_file)
-                with open("work_done.txt", "a") as file:
-                    file.writelines(f"{name}, {new_name}")
+                    os.rename(old_file, new_file)
+                    with open("work_done.txt", "a") as file:
+                        file.writelines(f"{name}, {new_name}")
         return count
     except Exception:
         exit()
