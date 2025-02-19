@@ -15,14 +15,19 @@ def file_index(filepaths, types:False, all_types:False):
 
                 if types and name.startswith('Obliga'):
                     result_name = 'obligation_found.xlsx'
+                    maximum_col = 40
                 elif name.startswith('DPS_'):
                     result_name = 'dps_found.xlsx'
+                    maximum_col = 32
+
                 else:
                     result_name = "files_found.xlsx"
+                    maximum_col = 50
+
                 wb = openpyxl.load_workbook(result_name)
                 sheet = wb.active
 
-                for row in sheet_obj.iter_rows(min_row=1, max_col=34, max_row=max_row):
+                for row in sheet_obj.iter_rows(min_row=1, max_col=maximum_col, max_row=max_row):
                     # appendix = str(row[0].value) + row[1].value + str(row[2].value)
                     if row[0].value is not None:
                         # print(row[0].value)
