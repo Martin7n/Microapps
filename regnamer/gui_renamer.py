@@ -2,7 +2,7 @@ from gui_renamer_func import file_rename
 import FreeSimpleGUI as sg
 import os
 
-from ocr_test_tabula.optimal_info import pdf_to_excel_min
+# from ocr_test_tabula.optimal_info import pdf_to_excel_min
 from rename_by_ocr import ocr_file_renamer
 from vars import path_to_file
 

@@ -2,9 +2,9 @@ import PyPDF2
 from openpyxl.reader.excel import load_workbook
 import re
 
-from file_feeder import file_read
-from patterns import vin_convention_pattern, cert_number_pattern, pattern_reg
-from vars import  path_to_file
+# from file_feeder import file_read
+# from patterns import vin_convention_pattern, cert_number_pattern, pattern_reg
+# from vars import  path_to_file
 
 
 #ocr, read and write all/optimal data
