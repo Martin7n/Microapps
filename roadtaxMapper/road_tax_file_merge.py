@@ -1,7 +1,7 @@
 import os
 import openpyxl
 
-def file_index(filepaths, types:False, all_types:False):
+def file_index(filepaths, type_obligations:False, all_types:False):
     count = 0
     for path, subdirs, files in os.walk(filepaths):
         for name in files:
@@ -13,7 +13,7 @@ def file_index(filepaths, types:False, all_types:False):
                 sheet_obj = wb_obj.active
                 max_row = sheet_obj.max_row
 
-                if types and name.startswith('Obliga'):
+                if type_obligations and name.startswith('Obliga'):
                     result_name = 'obligation_found.xlsx'
                     maximum_col = 40
                 elif name.startswith('DPS_'):

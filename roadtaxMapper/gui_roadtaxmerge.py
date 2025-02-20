@@ -6,7 +6,7 @@ label_1= "Select start folder"
 folder_input = sg.Input(default_text='Browse to select a folder')
 start_btn = sg.Button("Scan & Save")
 files_btn = sg.FolderBrowse("Add target folder", key="startfolder")
-type_btn = sg.Checkbox("Select Obligations files", default=False, key="type")
+type_btn = sg.Checkbox("Select Obligations files", default=False, key="type_obligations")
 type2_btn = sg.Checkbox("Select ALL", default=False, key="type2")
 
 status_label = sg.Text("")
@@ -25,9 +25,9 @@ while True:
 
     try:
         filepaths = values['startfolder']
-        types = values['type']
+        type_obligations = values['type_obligations']
         all_types = values['type2']
-        status_label.update(value=f"Process completed {file_index(filepaths, types, all_types)} found")
+        status_label.update(value=f"Process completed {file_index(filepaths, type_obligations, all_types)} found")
     except:
         status_label.update(value=f"Enter a valid path")
 
