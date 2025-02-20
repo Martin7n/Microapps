@@ -15,7 +15,7 @@ def file_index(filepaths, type_obligations:False, all_types:False):
 
                 if type_obligations and name.startswith('Obliga'):
                     result_name = 'obligation_found.xlsx'
-                    maximum_col = 40
+                    maximum_col = 28
                 elif name.startswith('DPS_'):
                     result_name = 'dps_found.xlsx'
                     maximum_col = 32
