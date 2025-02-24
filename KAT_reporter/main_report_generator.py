@@ -18,7 +18,6 @@ def dif_finder():
     cities = [col for col in old_df.columns if 'нови' in col or 'употр.' in col]
     # cities = [col for col in new_df.columns if 'нови' in col or 'употр.' in col]
 
-
     diffs = {}
 
     for city in cities:

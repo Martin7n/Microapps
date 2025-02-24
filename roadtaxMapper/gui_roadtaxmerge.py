@@ -27,7 +27,7 @@ while True:
         filepaths = values['startfolder']
         type_obligations = values['type_obligations']
         all_types = values['type2']
-        status_label.update(value=f"Process completed {file_index(filepaths, type_obligations, all_types)} found")
+        status_label.update(value=f"Process completed {file_index(filepaths, type_obligations, all_types)}.")
     except:
         status_label.update(value=f"Enter a valid path")
 
