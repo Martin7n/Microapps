@@ -9,6 +9,7 @@ def bookmarks_to_placeholders(input_path, output_path):
     ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
     temp_dir = mkdtemp()
 
+
     # Extract all contents
     with zipfile.ZipFile(input_path, 'r') as zip_in:
         zip_in.extractall(temp_dir)
