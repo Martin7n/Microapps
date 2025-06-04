@@ -161,3 +161,168 @@ def placeholders_to_bookmarks(input_path, output_path):
 
 #test2decode
 placeholders_to_bookmarks("c:/drob/Template2 .dotm", "c:/drob/Template2rebuild .dotm")
+
+
+
+import zipfile
+import os
+import shutil
+import re
+import xml.etree.ElementTree as ET
+from tempfile import mkdtemp
+
+# Register the default WordprocessingML namespace
+ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
+ET.register_namespace('', ns['w'])
+
+
+def bookmarks_to_placeholders(input_path, output_path):
+    temp_dir = mkdtemp()
+
+    # Extract the contents of the .dotm file
+    with zipfile.ZipFile(input_path, 'r') as zip_in:
+        zip_in.extractall(temp_dir)
+
+    doc_path = os.path.join(temp_dir, 'word', 'document.xml')
+    tree = ET.parse(doc_path)
+    root = tree.getroot()
+
+    bookmark_names = {}
+    open_bookmarks = {}
+
+    # Collect bookmark names
+    for bm in root.iter('{%s}bookmarkStart' % ns['w']):
+        bm_id = bm.attrib.get('{%s}id' % ns['w'])
+        bm_name = bm.attrib.get('{%s}name' % ns['w'])
+        print(f"bookmark_found: {bm_name}, {bm_id}")
+        if bm_name and not bm_name.startswith('_'):
+            bookmark_names[bm_id] = bm_name
+
+    def inject_placeholder(parent, text, pos):
+        r = ET.Element('{%s}r' % ns['w'])
+        t = ET.Element('{%s}t' % ns['w'])
+        t.text = text
+        r.append(t)
+        parent.insert(pos, r)
+
+    def process_elem(elem):
+        for i, child in enumerate(list(elem)):
+            if child.tag.endswith('}bookmarkStart'):
+                bm_id = child.attrib.get('{%s}id' % ns['w'])
+                bm_name = bookmark_names.get(bm_id)
+                if bm_name:
+                    inject_placeholder(elem, f"{{{{{bm_name}}}}}", i)
+                    open_bookmarks[bm_id] = bm_name
+            elif child.tag.endswith('}bookmarkEnd'):
+                bm_id = child.attrib.get('{%s}id' % ns['w'])
+                open_bookmarks.pop(bm_id, None)
+            else:
+                process_elem(child)
+
+    process_elem(root.find('w:body', ns))
+    tree.write(doc_path, encoding='utf-8', xml_declaration=True, method='xml')
+
+    # Repackage into a new .dotm file
+    with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zip_out:
+        for foldername, subfolders, filenames in os.walk(temp_dir):
+            for filename in filenames:
+                abs_path = os.path.join(foldername, filename)
+                rel_path = os.path.relpath(abs_path, temp_dir)
+                zip_out.write(abs_path, rel_path)
+
+    print(f"✅ Bookmarks converted to placeholders: {output_path}")
+
+
+def placeholders_to_bookmarks(input_path, output_path):
+    temp_dir = mkdtemp()
+    bookmark_id = 0
+
+    with zipfile.ZipFile(input_path, 'r') as zip_in:
+        zip_in.extractall(temp_dir)
+
+    doc_path = os.path.join(temp_dir, 'word', 'document.xml')
+    tree = ET.parse(doc_path)
+    root = tree.getroot()
+
+    # Match placeholders like {{ClientName}}
+    pattern = re.compile(r'\{\{([a-zA-Z0-9_]+)\}\}')
+
+    def create_bookmark_runs(name, bm_id):
+        # <w:r><w:bookmarkStart/></w:r>, <w:r><w:t/></w:r>, <w:r><w:bookmarkEnd/></w:r>
+        bm_start = ET.Element('{%s}bookmarkStart' % ns['w'], {
+            '{%s}id' % ns['w']: str(bm_id),
+            '{%s}name' % ns['w']: name
+        })
+        bm_start_run = ET.Element('{%s}r' % ns['w'])
+        bm_start_run.append(bm_start)
+
+        text_run = ET.Element('{%s}r' % ns['w'])
+        t = ET.Element('{%s}t' % ns['w'])
+        t.text = name
+        text_run.append(t)
+
+        bm_end = ET.Element('{%s}bookmarkEnd' % ns['w'], {
+            '{%s}id' % ns['w']: str(bm_id)
+        })
+        bm_end_run = ET.Element('{%s}r' % ns['w'])
+        bm_end_run.append(bm_end)
+
+        return [bm_start_run, text_run, bm_end_run]
+
+    def process_elem(elem):
+        nonlocal bookmark_id
+        for i, child in enumerate(list(elem)):
+            if child.tag.endswith('}t') and child.text:
+                matches = list(pattern.finditer(child.text))
+                if matches:
+                    parent = elem
+                    pos = list(parent).index(child)
+                    new_elems = []
+
+                    text = child.text
+                    last_index = 0
+
+                    for match in matches:
+                        # Add preceding text
+                        if match.start() > last_index:
+                            t = ET.Element('{%s}t' % ns['w'])
+                            t.text = text[last_index:match.start()]
+                            r = ET.Element('{%s}r' % ns['w'])
+                            r.append(t)
+                            new_elems.append(r)
+
+                        name = match.group(1)
+                        new_elems.extend(create_bookmark_runs(name, bookmark_id))
+                        print(f"bookmark created: {name} (id: {bookmark_id})")
+                        bookmark_id += 1
+                        last_index = match.end()
+
+                    # Add trailing text
+                    if last_index < len(text):
+                        t = ET.Element('{%s}t' % ns['w'])
+                        t.text = text[last_index:]
+                        r = ET.Element('{%s}r' % ns['w'])
+                        r.append(t)
+                        new_elems.append(r)
+
+                    # Replace original text node
+                    del parent[pos]
+                    for j, ne in enumerate(new_elems):
+                        parent.insert(pos + j, ne)
+
+            else:
+                process_elem(child)
+
+    process_elem(root.find('w:body', ns))
+
+    tree.write(doc_path, encoding='utf-8', xml_declaration=True, method='xml')
+
+    # Repackage into a new .dotm file
+    with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zip_out:
+        for foldername, subfolders, filenames in os.walk(temp_dir):
+            for filename in filenames:
+                abs_path = os.path.join(foldername, filename)
+                rel_path = os.path.relpath(abs_path, temp_dir)
+                zip_out.write(abs_path, rel_path)
+
+    print(f"✅ Placeholders converted to bookmarks: {output_path}")
