@@ -112,7 +112,6 @@ def docx_reader(docx_list):
 
 def pdf_reader(filelist):
     print(filelist)
-
     result = []
 
     for file in filelist:
