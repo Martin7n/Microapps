@@ -7,6 +7,9 @@ import openpyxl
 
 
 import win32com.client as win32
+from rdflib.plugins.sparql.parserutils import value
+
+
 #
 
 ## Using built in word...
@@ -20,53 +23,60 @@ import win32com.client as win32
 
 
 
-def main_execution(dir_path):
+def main_execution(dir_path, phrase):
     file_collected = collect_files(dir_path)
     # print(file_collected[1])
     all_data_content = []
-    # # all_data_content.append(doc_reader(file_collected[0]))
-    # all_data_content.extend(docx_reader(file_collected[1]))
-    # all_data_content.append(docx_reader(file_collected[1]))
+
+    all_found = sum([len(x) for x in file_collected])
+
+    print(f"\033[32m {all_found} discovered... \033[0m  ")
+    print(f"\033[32m {len(file_collected[1])} docx to process... \033[0m  ")
+    print(f"\033[32m {len(file_collected[2])} pdfs to process... \033[0m  ")
+
+    all_data_content.append(docx_reader(file_collected[1]))
     all_data_content.append(pdf_reader(file_collected[2]))
 
-    # print(all_data_content)
-    #
-    # print(all_data_content[1])
-    # print(len(all_data_content))
+    filtered_content = extract_special_block(all_data_content, phrase)
+    print(f"\033[32m {len(filtered_content)} total to be written... \033[0m  ")
 
-    # print(all_data_content)
+    [rows_written, result_path] = excel_writer(filtered_content, dir_path)
 
-    # [print(x) for x, y in all_data_content[0].items()]
-    #
-    filtered_content = extract_special_block(all_data_content)
-    excel_writer(filtered_content, dir_path)
-
+    return f'''\033[32m Total: {rows_written} rows written 
+    in {result_path} \n containing <<{phrase}>> phrase \033[0m  '''
 
 
 def excel_writer(filtered_content, path_to_dir):
     wb = openpyxl.Workbook()
     sheet = wb.active
-    labels = ["File","Contract","Specials","Size","Type","Direct link"]
+    labels = ["File","Contract","Specials"]
     for col, label in enumerate(labels, start=1):
         sheet.cell(row=1, column=col).value = label
     wb.save('extracted_dataaaa.xlsx')
     count = 0
 
     for row, file in enumerate(filtered_content, start=2):
-        print(filtered_content)
+        count += 1
+        print(f"\033[32m Writing files...{count}  \033[0m  ")
+
         sheet.cell(row=row, column=1).value = file
         sheet.cell(row=row, column=2).value = filtered_content[file]
-        sheet.cell(row=row, column=3).value = filtered_content[file]
+        if "<tag>" in filtered_content[file]:
+            header = filtered_content[file].split("<tag>")[0]
+        else:
+            header = "no tag"
+            sheet.cell(row=row, column=1).value = filtered_content[file].split("<tag>")[0]
+        sheet.cell(row=row, column=3).value = header
+
         # sheet.cell(row=row, column=3).value = file["file"]
         # sheet.cell(row=row, column=4).value = file["file"][3]
         # sheet.cell(row=row, column=5).value = file["file"][5]
         # sheet.cell(row=row, column=6).value = file["file"][2]
         # sheet.cell(row=row, column=6).hyperlink = file['file'][2]
         # sheet.cell(row=row, column=6).style = "Hyperlink"
-        count += 1
     wb.save('extracted_dataaaa.xlsx')
     wb.close()
-    return count
+    return count, (os.path.join(path_to_dir, 'extracted_dataaaa.xlsx'))
 
 def collect_files(dir_path):
     docs_and_others = [ "doc", "docx" ,"pdf"]
@@ -104,20 +114,22 @@ def collect_files(dir_path):
 
 
 def docx_reader(docx_list):
-    result = []
+
     dicty = {}
     for file in docx_list:
+        result = []
 
         doc = Document(file)
         full_text = []
 
-
         for para in doc.paragraphs:
             text = para.text.strip()
             if text:
+                if len(full_text) == 0:
+                    tag_text = text[0:100]+"<tag>"
+                    full_text.append(tag_text)
                 full_text.append(text)
 
-            # Extract tables
         for table in doc.tables:
             for row in table.rows:
                 row_text = [cell.text.strip() for cell in row.cells]
@@ -126,20 +138,17 @@ def docx_reader(docx_list):
         result.append("\n".join(full_text))
         dicty[file] = "\n".join(full_text[0:100])
 
-        # print(dicty)
-        # print(result)
-    # return result
     return dicty
 
 
 
 def pdf_reader(filelist):
 
-    result = []
+
     dicty = {}
 
     for file in filelist:
-        # print(file)
+        result = []
         reader = PdfReader(file)
 
         for page in reader.pages:
@@ -147,49 +156,32 @@ def pdf_reader(filelist):
             if page_text:
                 result.append(page_text.strip())
         text_origin = "\n".join(result)
-        dicty[file] = text_origin
-
-
-        # page = reader.pages[0]
-        # text_origin = page.extract_text()
-        # total_length = len(text_origin)
-        # short = total_length - 50
-        # text = text_origin[0:300]
-        # result.append(text_origin)
-        # dicty[file] = text_origin
-        # print(text_origin )
+        if text_origin:
+            dicty[file] = text_origin
 
     return dicty
 
 
 
-def extract_special_block(all_data_content, phrase="Специални условия", chars_after=1500):
-    # phrase = "thermal"
+def extract_special_block(all_data_content, phrase="специални условия", chars_after=1500):
     resolved = {}
-    count = 0
-    # print(all_data_content)
-
+    print(f"\033[32m Data extraction in progress...  \033[0m  ")
     for records in all_data_content:
+
+
         for key, text in records.items():
             match = re.search(re.escape(phrase), text, re.IGNORECASE)
             if match:
-                print( match)
-                page_title = f'<b>some tags added<h1>{text[0:50]}</b>some tags added</h1>'
+                page_title = f'{text[0:50]}<tag>'
 
-                count += 1
                 start = match.start()
                 end = min(start + chars_after, len(text))
                 complete_text = text[start:end]
                 partial = complete_text[0:10000]
-                if partial:
-                    resolved[key] = page_title + partial
-
-            else:
-                resolved[key] = "None"
-
-    print("check")
-    print(resolved)
-    print("check2")
+                # if partial:
+                resolved[key] = page_title + partial
+            # else:
+            #     resolved[key] = "No mached content"
 
     return resolved
 
@@ -199,4 +191,5 @@ def extract_special_block(all_data_content, phrase="Специални усло�
 
 if __name__ == '__main__':
     dpath = "C:\\Drob"
-    print(main_execution(dpath))
+    phrase = "special conditions"
+    print(main_execution(dpath, phrase))
