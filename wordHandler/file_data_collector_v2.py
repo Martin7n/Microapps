@@ -186,6 +186,82 @@ def extract_special_block(all_data_content, phrase="специални усло�
     return resolved
 
 
+def doc_all_reader(doc_list):
+
+    # Todo: blindly coded...no win32
+    dicty = {}
+    for file in doc_list:
+        full_text = []
+
+        word = win32.Dispatch("Word.Application")
+        doc = word.Documents.Open(file)
+        text = doc.Content.Text
+        doc.Close()
+
+        dicty[file] = "\n".join(full_text[0:100])
+
+    return dicty
+
+
+def doc_all_reader_2(doc_list):
+    dicty = {}
+
+    try:
+        from docx import Document as DocxDocument
+        docx_available = True
+    except ImportError:
+        docx_available = False
+
+    try:
+        import win32com.client as win32
+        word = win32.Dispatch("Word.Application")
+        word.Visible = False
+        win32_available = True
+    except:
+        win32_available = False
+        word = None
+
+    for file in doc_list:
+        ext = os.path.splitext(file)[1].lower()
+        text = ""
+
+        if ext == ".docx" and docx_available:
+            try:
+                doc = DocxDocument(file)
+                parts = []
+
+                # paragraphs
+                for p in doc.paragraphs:
+                    parts.append(p.text)
+
+                # tables
+                for table in doc.tables:
+                    for row in table.rows:
+                        parts.append("\t".join(cell.text for cell in row.cells))
+
+                text = "\n".join(parts)
+
+            except Exception as e:
+                text = f"[ERROR reading as DOCX: {e}]"
+
+        elif win32_available:
+            try:
+                doc = word.Documents.Open(file)
+                text = doc.Content.Text
+                doc.Close()
+            except Exception as e:
+                text = f"[ERROR reading via Word: {e}]"
+
+        else:
+            text = "[No available method to read file]"
+
+        lines = text.splitlines()
+        dicty[file] = "\n".join(lines[:100])
+
+    if word:
+        word.Quit()
+
+    return dicty
 
 
 
