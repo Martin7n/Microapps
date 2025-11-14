@@ -217,6 +217,7 @@ def doc_all_reader_2(doc_list):
         word = win32.Dispatch("Word.Application")
         word.Visible = False
         win32_available = True
+
     except:
         win32_available = False
         word = None
