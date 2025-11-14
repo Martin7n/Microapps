@@ -24,11 +24,14 @@ def main_execution(dir_path, phrase):
     file_collected = collect_files(dir_path)
     all_data_content = []
     # all_data_content.extend(doc_reader(file_collected[0]))
-    # all_data_content.extend(docx_reader(file_collected[1]))
+    all_data_content.extend(docx_reader(file_collected[1]))
     all_data_content.extend(pdf_reader(file_collected[2]))
+    # pdf_reader(['C:\\Drob\\krrr841211.pdf', 'C:\\Drob\\2.pdf'])
+
+
     filtered_content = extract_special_block(all_data_content, phrase)
     #
-    # excel_writer(filtered_content, dir_path)
+    excel_writer(filtered_content, dir_path)
 
 
 def excel_writer(filtered_content, path_to_dir):
@@ -111,19 +114,24 @@ def docx_reader(docx_list):
 
 
 def pdf_reader(filelist):
-    print(filelist)
     result = []
 
     for file in filelist:
         reader = PdfReader(file)
-        for page in reader.pages:
-            page_text = page.extract_text()
-            if page_text:
-                if not result:
-                    result.append(f'{page_text.strip()[0:100]} <tag>')
+        # print(reader.pages)
+        if reader.pages:
+            all_text = ""
 
-                result.append(page_text.strip())
-
+            for page in reader.pages:
+                page_text = page.extract_text()
+                if page_text and page_text.strip():
+                    if not all_text:
+                        all_text += f'{page_text.strip()[0:100]} <tag>'
+                all_text += page_text
+            if not all_text:
+                print("non extractable")
+            result.append(all_text.strip())
+    print(result[0:4])
     return result
 
 
@@ -131,24 +139,26 @@ def pdf_reader(filelist):
 def extract_special_block(all_data_content, phrase="специални условия", chars_after=300):
 
     pass
-    # resolved = []
-    # count = 0
-    # # print(all_data_content)
+    resolved = {}
+    count = 0
     # print(all_data_content)
-    # for text in all_data_content:
-    #
-    #     match = re.search(re.escape(phrase), text, re.IGNORECASE)
-    #     if match:
-    #         count += 1
-    #         start = match.start()
-    #         end = min(start + chars_after, len(text))
-    #         key_body = text[start:end]
-    #         key_text = text[0:100] + "\n" + str(count)
-    #         resolved[key_text] = key_body
-    #
-    #     print(resolved)
+    print(all_data_content)
+    for text in all_data_content:
+        key_body =""
+        key_text =""
 
-    # return resolved
+        match = re.search(re.escape(phrase), text, re.IGNORECASE)
+        if match:
+            count += 1
+            start = match.start()
+            end = min(start + chars_after, len(text))
+            key_body = text[start:end]
+            key_text = text[0:100] + "\n" + str(count)
+        resolved[key_text] = key_body
+
+        print(resolved)
+
+    return resolved
 
 
 
@@ -156,5 +166,5 @@ def extract_special_block(all_data_content, phrase="специални усло�
 
 if __name__ == '__main__':
     dpath = "C:\\Drob"
-    phrase = "Special conditions"
+    phrase = "Специални условия"
     print(main_execution(dpath, phrase))
