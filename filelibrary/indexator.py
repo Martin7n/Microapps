@@ -47,6 +47,8 @@ def walker_all(path_to_dir):
     for path, subdirs, files in os.walk(path_to_dir):
         for name in files:
             found = os.path.join(path, name)
+
+            print(found)
             size = os.path.getsize(found)
             created = os.path.getctime(found)
             type = f"<{name.split(".")[-1]}>"
@@ -57,4 +59,4 @@ def walker_all(path_to_dir):
 
 
 if __name__ == '__main__':
-    print(file_index("D:\\", True))
+    print(file_index("E:\\Mine!\\", True))
