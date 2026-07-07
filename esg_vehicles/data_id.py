@@ -1038,3 +1038,9 @@ FUEL_SIGNALS = {
     "diesel": DIESEL_KEYWORDS,
     "petrol": PETROL_KEYWORDS
 }
+
+MOTORCYCLE = []
+Car = []
+LCV = []
+MEDIUM_DUTY_VEHICLES = []
+HEAVY_DUTY_VEHICLES = []

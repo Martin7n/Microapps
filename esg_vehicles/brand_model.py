@@ -2,7 +2,7 @@ from esg_vehicles.data_id import BRAND_ALIASES, BADGE_PATTERN
 
 
 def norm(x):
-    return (x or "").lower()
+    return (str(x) or "").lower()
 
 def extract_brand(brand, model, description):
     texts = [norm(brand),norm(model),norm(description)]
@@ -28,9 +28,10 @@ def brand_model(brand, model, description):
     text = " ".join([brand, model, description]).lower()
     extracted_brand = extract_brand(text)
     extracted_model = extract_model(text, extracted_brand)
+    return extracted_brand, extracted_model
 
 def brand_model_extraction(brand, model, description):
-    all_text = ",".join([brand,model, description])
+    all_text = ",".join([brand,str(model), description])
     # print(all_text)
     BRAND_LOOKUP = {}
 

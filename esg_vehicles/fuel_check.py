@@ -9,9 +9,6 @@ def normalize(text):
 def find_fuel_signals(text):
     text = normalize(text)
     words = set(text.split())
-    print("aaa")
-    print(words)
-    print("aaa")
 
     signals = set()
 
@@ -25,7 +22,7 @@ def find_fuel_signals(text):
 
 def classify_fuel(text):
     signals = find_fuel_signals(text)
-    print(signals)
+    # print(signals)
     # return reduce_signals(signals)
     if "electric" in signals:
         if "petrol" in signals or "diesel" in signals:

@@ -14,7 +14,7 @@ def weight_normalization(weight, unit):
         return None
 
     unit = unit.lower().strip()
-    if unit == "t":
+    if unit.lower() == "t":
         weight = weight * 1000
     elif unit == "kg":
         pass
@@ -31,6 +31,9 @@ def weight_normalization(weight, unit):
 
 
 def classify_by_weight(weight):
+# def classify_by_weight(weight, measure_unit):
+
+    # weight = weight_normalization(weight, measure_unit)
     if weight is None:
         return "unknown"
 
