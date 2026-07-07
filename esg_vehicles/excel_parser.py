@@ -42,13 +42,6 @@ def xls_parse_sample(file):
         object_to_write.append(updated_object)
 
     return object_to_write
-        # for k,v in x.items():
-        #     print(f"{k}:{v}", end="\t")
-
-
-
-
-
 
 
 def xls_parse_base(file):
