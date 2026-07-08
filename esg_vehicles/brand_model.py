@@ -1,4 +1,5 @@
 from esg_vehicles.data_id import BRAND_ALIASES, BADGE_PATTERN
+from esg_vehicles.data_id3 import HYBRID_KWORDS, SORTED_BRAND_LOOKUP
 
 
 def norm(x):
@@ -6,6 +7,8 @@ def norm(x):
 
 def extract_brand(brand, model, description):
     texts = [norm(brand),norm(model),norm(description)]
+
+
 
     # strongest signal first
     for text in texts:
@@ -41,7 +44,33 @@ def brand_model_extraction(brand, model, description):
 
     return BRAND_LOOKUP
 
+def brands_t(descriptions):
+    res = {}
+    for record in descriptions:
+        dsc = record.replace(", ", " ")
+        data = [str(x.lower()) for x in dsc.split(' ')]
+        for rec in data:
+            if rec not in res:
+                res[rec] = 0
+            res[rec] +=1
+    # for k, v in res.items():
+    #     print(f'{k}-{v}')
+    return res
 
+
+def model_ext(brand, model, description):
+    texts = [
+        norm(brand),
+        norm(model),
+        norm(description)
+    ]
+
+    for text in texts:
+        for alias, canonical in SORTED_BRAND_LOOKUP:
+            if alias in text:
+                return canonical
+
+    return None
 
 if __name__ == '__main__':
     #test_data

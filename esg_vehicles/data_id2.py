@@ -1,0 +1,555 @@
+
+
+EV_KEYWORDS = [
+    # generic
+    "ev", "electric", "bev", "battery electric",
+
+    # bulgarian
+    "електрически",
+    "електромобил",
+    "електро",
+
+    # tesla
+    "tesla", "model 3", "model y", "model s", "model x", "cybertruck",
+
+    # vw group
+    "id.3", "id.4", "id.5", "id.7", "id buzz", "id. buzz",
+    "e-golf", "e up", "e-up",
+
+    # audi
+    "e-tron", "etron", "q4 e-tron", "q6 e-tron", "q8 e-tron",
+
+    # bmw
+    "i3", "i4", "i5", "i7", "ix", "ix1", "ix2", "ix3",
+
+    # mercedes
+    "eqb", "eqc", "eqe", "eqs", "eqa",
+
+    # hyundai/kia
+    "ioniq 5", "ioniq 6", "kona electric", "ev6", "ev9",
+    "niro ev",
+
+    # renault
+    "zoe", "megane e-tech", "scenic e-tech", "renault 5 e-tech",
+
+    # peugeot/citroen/opel
+    "e-208", "e-2008", "e-308", "e-3008",
+    "e-c4", "e-c4 x",
+    "corsa-e", "astra-e",
+
+    # skoda
+    "enyaq", "elroq",
+
+    # ford
+    "mustang mach-e", "mach e", "f-150 lightning",
+
+    # nissan
+    "leaf", "ariya",
+
+    # others
+    "mg4", "mg zs ev", "byd", "seal", "atto 3", "dolphin",
+    "xpeng", "zeekr", "rivian", "lucid"
+]
+
+HYBRID_KEYWORDS = [
+    # generic
+    "hybrid", "full hybrid", "mild hybrid",
+    "phev", "plug-in", "plugin hybrid",
+
+    # bulgarian
+    "хибрид",
+    "пълен хибрид",
+    "мек хибрид",
+    "плъгин хибрид",
+    "плъг-ин хибрид",
+    "зареждащ се хибрид",
+    "хибриден",
+    "меко хибриден",
+
+    # toyota systems (VERY important)
+    "hsd", "hybrid synergy drive", "ths", "toyota hybrid",
+
+    # vw group
+    "gte", "tsi hybrid",
+
+    # mercedes
+    "eq boost", "eq-boost", "eq power",
+
+    # bmw
+    "xdrive hybrid", "active hybrid",
+
+    # renault
+    "e-tech hybrid", "e tech",
+
+    # stellantis
+    "4xe", "hybrid4", "e-hybrid", "plug-in hybrid",
+
+    # hyundai/kia
+    "tmhev", "hev", "k-hybrid",
+
+    # honda
+    "i-mmd", "immd", "ehev",
+
+    # ford
+    "ecoboost hybrid", "mhev"
+]
+
+DIESEL_KEYWORDS = [
+    # generic
+    "diesel", "diesel engine",
+
+    # bulgarian
+    "дизел",
+    "дизелов",
+    "дизелов",
+    "дизелов двигател",
+
+    # vw group
+    "tdi", "sdi",
+
+    # ford
+    "tdci", "tddi",
+
+    # psa
+    "hdi", "bluehdi",
+
+    # renault
+    "dci",
+
+    # mercedes
+    "cdi", "bluetec",
+
+    # fiat/alfa
+    "jtd", "multijet", "mjet",
+
+    # toyota
+    "d-4d", "d4d",
+
+    # kia/hyundai
+    "crdi", "crdi diesel", "u2 crdi",
+
+    # bmw
+     "xdrive d",
+
+    # mazda
+    "skyactiv-d",
+
+    # opel
+    "cdti"
+]
+
+PETROL_KEYWORDS = [
+    # generic
+    "petrol", "gasoline", "gas", "benzine",
+
+    # bulgarian
+    "бензин",
+    "бензинов",
+    "бензинов двигател",
+
+    # vw group
+    "tsi", "tfsi", "fsi", "mpi",
+
+    # ford
+    "ecoboost",
+
+    # psa
+    "vti", "puretech",
+
+    # renault
+    "tce",
+
+    # hyundai/kia
+    "gdi", "tgdi", "mpi",
+
+    # toyota
+    "vvt-i", "vvt i", "vvti", "dual vvt-i", "dual vvt i",
+
+    # mazda
+    "skyactiv-g",
+
+    # honda
+    "vtec", "i-vtec", "ivtec",
+
+    # fiat
+    "fire",
+
+    # bmw
+    # DO NOT use "i" as a keyword—it creates many false positives.
+
+    # mercedes
+    "cgi", "kompressor"
+]
+
+BMW_REGEX = r"\b(?:116|118|120|218|220|320|330|420|520|530|540|740|750|840)i\b"
+
+FUEL_SIGNALS = {
+    "electric": EV_KEYWORDS,
+    "hybrid": HYBRID_KEYWORDS,
+    "diesel": DIESEL_KEYWORDS,
+    "petrol": PETROL_KEYWORDS
+}
+
+# --- 1. VEHICLE TYPE KEYWORDS ---
+# TRAILER_KEYWORDS = [
+#     "ремарке",
+#     "ремаркета",
+#     "полуремарке",
+#     # "цистерна",
+#     "trailer",
+#     "schmitz",
+#     "krone",
+#     "kogel",
+#     "п/рем",
+#     "ремарке"
+# ]
+
+
+TRAILER_KEYWORDS = [
+    # Generic
+    "trailer",
+    "semi trailer",
+    "semi-trailer",
+    "semi",
+    "remorque",
+    "anhanger",
+    "anhänger",
+
+    # Bulgarian
+    "ремарке",
+    "ремаркета",
+    "полуремарке",
+    "полу-ремарке",
+    "п/рем",
+    "прицеп",
+
+    # Common manufacturers
+    "schmitz",
+    "schmitz cargobull",
+    "krone",
+    "kogel",
+    "kögel",
+    "wielton",
+    "berger",
+    "schwarzmuller",
+    "schwarzmüller",
+    "fliegl",
+    "fliegel",
+    "wabash",
+    "chereau",
+    "fruehauf",
+    "leci trailer",
+    "benalu",
+    "lecitrailer",
+    "samro",
+    "sor",
+    "sor iberica",
+    "burg",
+    "van hool",
+    "kaessbohrer",
+    "kässbohrer",
+    "ozgul",
+    "ozgul trailer",
+    "talson",
+    "kassbohrer",
+    "mega",
+    "novatrail",
+
+    # Trailer body types
+    "бордово ремарке",
+    "бордово полуремарке",
+    "платформа",
+    "падащ борд",
+    "щора",
+    "брезент",
+    "мега",
+    "контейнеровоз",
+    "контейнерно шаси",
+    "контейнерно ремарке",
+    "шаси",
+    "хладилно ремарке",
+    "хладилен",
+    "рефрижератор",
+    "реф",
+    "изотермично",
+    "фургон ремарке",
+    "автовоз",
+    "нископодов",
+    "нискорамно",
+    "нискорамен",
+    "платформа за техника",
+    "самосвално ремарке",
+    "самосвално полуремарке",
+    "зерновоз",
+    "силоз",
+    "цистерна",
+    "битумовоз",
+    "цементовоз",
+    "дървовоз",
+    "дървен материал",
+    "лог трейлър",
+    "лог ремарке",
+    "лесовозно ремарке",
+
+    # Axles
+    "2 оси",
+    "3 оси",
+    "4 оси",
+    "двуосно",
+    "триосно",
+    "четириосно",
+
+    # Common trailer brands in BG
+    "hapert",
+    "humbaur",
+    "wm meyer",
+    "eduard",
+    "böckmann",
+    "boeckmann",
+    "brenderup",
+    "saris",
+    "variant",
+    "barthau",
+]
+
+LCV_KEYWORDS = [
+    "35c", "35s", "35ц", "35с",
+    "daily",
+    "314", "316",
+    "lcv",
+    "бус",
+    "фургон",
+    "trafic",
+    "ducato",
+    "460",
+    "dokker",
+    "n1",
+
+    # Toyota
+    "hilux",
+
+    # VW
+    "transporter",
+    "транспортер",
+
+    # Ford Transit
+    "350", "t350", "ft350",
+    "custom",
+    "transit",
+    "транзит",
+    "l3h2",
+
+    # Mercedes Sprinter
+    "311", "313", "314", "316", "319",
+    "sprinter3",
+
+    # Large vans
+    "master", "мастер",
+    "boxer", "боксер",
+    "jumper", "джъмпер",
+    "crafter", "крафтер",
+    "movano",
+    "interstar",
+
+    # Small/Medium vans
+    "caddy", "кади",
+    "partner", "партнер",
+    "berlingo", "берлинго",
+    "kangoo", "канго",
+    "fiorino",
+    "doblo",
+    "scudo",
+    "vito", "вито",
+    "e-rifter",
+
+    # Generic
+    "3.5t",
+    "3.5т",
+    "3,5t",
+    "3,5т",
+    "лекотоварен",
+    "товарен до 3.5",
+    "L1H1", "L2H2", "L3H2", "L3H3", "L4H3",
+]
+LCV_VIN = ['VF3YCBP',  'VF37ABH', 'VR7EHHN', 'VR7EUHN', 'W1VVLBE', 'WDB9066', 'VF3YDF6', 'VXEYCF6', 'W1V3MDF', 'VF6MH00', 'W1V5MC3', 'WF0RXXT', 'WF0SXXW', 'W1V3KCF', 'W1VGH2F', 'VF3YD2M', 'VR7ENZK', 'LDFHGT1', 'VR79AZ2', 'VF7VFEH', 'VF7YBAP', 'VF7YAAP', 'VXEVBYH', '7MW4LTR', 'VF1FW50', 'VF6TDB0', 'VF7YDCP', 'VF3YCBN', 'VF3V1ZK', 'VXEYCAP', 'VF7YDBN', 'VF7V1ZK', 'UU18SDX', 'VF3YCAP', 'VF7YCBN', 'W0VEAZK', 'W1V3KBF', 'W0L6ZZA', 'VXEYAE6', 'VXEVFEH', 'W0VENZK', 'WF0DXXT', 'W1VFHBF', 'YARVBYH', 'ZD3TE16', 'YARVLEH', 'WF0WXXT', 'VR3EAZK', 'VF3YAAN', 'VF7VLEH', 'VF3VBYH', 'VF1FW00', 'VF7YBAN', 'VF7YDG6', 'VF7YCAP', 'VR7CHHP', 'VF77DBH', 'VF7VTZK', 'VF3YDCN', 'VXEYDG6', 'W0L4F72', 'VXEVLEH', 'W1V3HCF', 'VXEYDCP', 'W0VF7D6', 'WF04NBE', 'W1V5KDF', 'WMA08VU', 'ZCFC450', 'ZD3E7M9', 'JS1EM12', 'JS1EJ11', 'JH2RH12', 'JH2RH11', 'JH2PC69', '7MW2LTR', 'JS1EM11', 'CXEYCAP', 'NL6A21R', 'SBM22GC', 'TYBFEC7', 'MLHRH15', 'MLHJC92', 'VF37EBH', 'VF7YD2M', 'VF1MD00', 'VF3YABP', 'VF7YB2M', 'VF3YDCP', 'VF6TDAE', 'VF1FW18', 'VF1FW17', 'VFMA000', 'VF17R0J', 'UU18SDR', 'VF3VZKX', 'VF3YCG6', 'VF7VJYH', 'VBKTU74', 'VNVNDA0', 'VF3YC1M', 'VF3YBF6', 'VF3YBE6', 'W0VMR36', 'W0VF7G6', 'VXEYBBP', 'VXEYAAP', 'W1V3MBT', 'VSKYAAM', 'VR7RDYH', 'WF04NCE', 'W1V5MDF', 'W1V5M33', 'WF04N1E', 'W1V4476', 'WF0CXXS', 'WDB9076', 'W1VGHBF', 'W1V5M2F', 'W1V5KCF', 'W1V4206', 'W1V3MCF', 'YAREAZK', 'ZD3E7M4', 'X96A21R', 'ZAPNP6B', 'ZFF96NM', 'YARVFEH', 'YARVFAH', 'ZD3EC16', 'WPOZZZ9', 'ZD3EC18', 'ZFF90HM']
+
+HGV_KEYWORDS = ["РІР»РµРєР°С‡", "daf","semi truck" "РјР°РЅ", "man",  "РєР°РјРёРѕРЅ", "hgv", "tge", "tga", "actros", "scania", "tgx", "fh16",
+                #"iveco", "516", "517", "519", "С‚РѕРІР°СЂРµРЅ Р°РІС‚РѕРјРѕР±РёР»",
+                ]
+HGV_VIN = ['XLRTEF5', 'XLRTEH4', 'YV2RT40', 'VF610A3', 'WMA06KZ', 'YV2RTY0', 'WDB9634', 'NM0MKXT', 'VF611A3', 'XLRASF5', 'YS2S4X2', 'NM0KCXT', 'WMA20FZ', 'YS2K6X2', 'YS2K4X2', 'WDF9634', 'WMA06XZ', 'WMA06JZ', 'VF631S3', 'YS2P4X2', 'ZCFM62A', 'NM0LKXT', 'NM0KKXT', 'W1T9630', 'WMA13KZ', 'ZCFJ64C', 'WJMJ4CT', 'WDB9630', 'ZCNH984', 'WMA15FZ', 'YV2XZY0', 'YS2P8X4', 'YV2XTY0', 'YV2RTW0', 'WJMJ64C', 'XLRASM4', 'ZCFA81T', 'в„–...', 'VF611A1', 'XLRASH4', 'ZCFMG2A', 'ZD3TE16', 'WMA39SZ', 'WJMM62A', 'WMA30JZ', 'ZCFC150', 'YS2G4X2', 'NLRTNHK', 'VF620J1', 'VNE6036', 'W1T9640', 'W17T963', 'WEB6283', 'WMA18XZ', 'YV2T0U1', 'ZCFJE4C', 'YS2R6X4', 'YV2XTR0', 'YS2G6X2', 'WMAN14Z', 'ZD3E7M9', 'YV2XT40', 'ZCFD070', 'XLRTGH4', 'WMAN15Z', 'WMA21XZ', 'XLRAEL3', 'ZCFCN50', 'ZCFCD35', 'ZCFCA50', 'LXGDPA6', 'JS1EM12', 'JS1EJ11', 'JH2RH12', 'JH2RH11', 'JH2PC69', 'JS1EM11', 'GLW1511', 'NMC633E', 'NLRTMF1', 'NNAM0B6', 'NM0LTXT', 'NM0KCTP', 'MLHRH15', 'NNAM0BE', 'SUU206U', 'MLHJC92', 'в„–BCN123', 'в„–210800', 'VF610C3', 'VF6VFE0', 'VF621N8', 'UU18SDN', 'VBKTU74', 'W1T9643', 'W119634', 'W1T9834', 'WDB9062', 'WDB9644', 'WDB9642', 'ZD3E7M4', 'WMAN16Z', 'WLFA21C', 'XLRADM4', 'WMA73SZ', 'WMA10XZ', 'WLFA54B', 'ZCFC035', 'WMA49SZ', 'WMA18VU', 'WMA05XZ', 'WLFA42C', 'ZCFC435', 'ZCFC335', 'YV2X9RO', 'WMAN46Z', 'YV2X9J0', 'ZD3EC16', 'WMA82EZ', 'YV2T0W1', 'WMA59SZ', 'YS2R6X2', 'YV2RT60', 'YS2P6X4', 'ZCFC235', 'ZCFCG35', 'WMA10VU', 'WLFA52B', 'ZD3EC18', 'WLFA32A', 'WJMMG2A', 'WJMM1VU', 'WFN2RTL', 'ZCFA62A', 'ZCFEE2S', 'ZCFE62R']
+
+CAR_KEYWORDS = [
+    "лекавтомобил",
+    "лек автомобил",
+
+    "reev",
+
+    "октавия",
+    "скала",
+    "шайн",
+    "джук",
+
+    "panamera",
+    "taycan",
+    "corolla",
+    "shine",
+    "tesla",
+    "zr-v",
+    "sandero",
+    "c-hr",
+    "ц-hr",
+    "ioniq",
+    "ev3",
+    "ev6",
+    "amg",
+    "vitara",
+    "swift",
+    "forthing",
+    "taigo",
+    "polo",
+    "citiray",
+    "car",
+    "suv",
+    "mpv",
+    "седан",
+    "хечбек",
+    "комби",
+    "puma",
+    "hr-v",
+    "nammi",
+    "starray",
+    "s800"
+]
+
+CAR_VIN = ['VF1RFB0', 'U5YH481', 'VF1RJB0', 'VF1RHN0', 'U5YPV81', 'WAUZZZF', 'VR3USHN', 'WVGZZZC', 'VF1RJL0', 'NMTBA3B', 'JMZKFGW', 'TMAJD81', 'NLHDM51', 'VF3MCYH', 'KNADB51', 'TMAJC81', 'NMTBD3B', 'TMAJE81', 'JMZKH0H', 'NMTK53B', 'JN1T33J', 'WVWZZZ3', 'NMTK33B', 'VF1AG00', 'VXKUSHN', 'SJNTANJ', 'NLHBM51', 'U5YPX81', 'WVGZZZA', 'VR3FPHN', 'TSMLYED', 'VR3UPHN', 'LMXA14A', 'VR3KAHP', 'KNAD681', 'U5YH151', 'WAUZZZG', 'SJNFAAF', 'TMAJB81', 'TSMJYBD', 'U5YPU81', 'VXKUPHN', 'VF7SXHM', 'JSAZCED', 'AHTKB3C', 'W0V7D9E', 'JTDKBAB', 'UU1DBG0', 'JTMD63F', 'WVWZZZC', 'JTPAAAA', 'VF1RCB0', 'WAUZZZ4', 'LGWEE4A', 'YARKBAC', 'SJNFFAJ', 'VSSZZZK', 'JMZDM6W', 'VF3MRHN', 'JTDKGNE', 'JSAAZCA', 'TSMJYAD', 'KNACP81', 'WP1ZZZ9', 'LGWFF6A', 'JTMR63F', 'JMZKL0H', 'JTDAGNA', 'TMBAR8N', 'TMBEK6N', 'KMHK281', 'W0V7H9E', 'VF7SZHM', 'VF1RFE0', 'JN1T33T', 'NLHDN51', 'VXKFPHN', 'JF1BT9L', 'JMZKF6W', 'JTEBR3F', 'JTNB23H', 'SJNTBAJ', 'TSMLYDD', 'TMBEP7N', 'VR3FBYH', 'JMZGL62', 'TSMLYEH', 'TMAK281', 'LVZA53P', 'KMHHB81', 'JTNADAD', 'JTNABAC', 'TMBJR8N', 'TMAH251', 'VR7BAHN', 'VF1R980', 'KNADC51', 'JTDKAAB', 'JHMRT68', '5TDLB3C', 'NLHBN51', 'AHTBA3C', 'JTPABAC', 'TMAH281', 'TMBLN9N', 'VR1J45G', 'LGWFFVA', 'TMBAJ8N', 'NMTBZ3B', 'U5YH5F1', 'JHMRV58', 'KMHKR81', 'KMHK381', 'LVHRS68', 'VR3UPHM', 'VXKUSHP', 'TMBGK6N', 'VF1RZG0', 'KNARH81', 'VF3M45G', 'VNKKG3D', 'U5YH4F1', 'TMBAG8N', 'SB1KB3A', 'U5YH7F1', 'VR3UHZK', 'UU1K522', 'VR3USHP', 'NLHBM81', 'VR7BDHN', 'WF0FXXW', 'LB37622', 'JHMFL48', 'SB1Z93B', 'VR3FCYH', 'WV2ZZZS', 'JM4BP6S', 'JMZGL69', 'KMHK581', 'JMZDJ6H', 'TMBJJ8N', 'SB1K93B', 'VXKKAHP', 'LGWEFUA', 'KNAB251', 'KMHS581', 'JTDKCAC', 'JTMR43F', '3MVDM6W', 'TMAH881', 'TMAJA81', 'TMBJR7N', 'VR3FRHN', 'VR3UKZK', 'VXKUKZK', 'JTPABAA', 'TSMZB3A', 'VNVK140', 'LGJE1EE', 'JTEAREA', 'TMBEP6N', 'W1N1671', 'TMBER6N', 'SB1ZB3A', 'SJNFCAF', 'W1K2231', 'XP7YGCE', 'LHGRZ48', 'TMBEP6P', 'TMBLN9P', 'VF1RFD0', 'JTME63F', 'NLHB251', 'VF3MJEH', 'VR7BBYH', 'VR7CCHP', 'WBA21EN', 'KMHHC81', 'W1N1679', 'LMXG14D', 'JM4BP6H', 'JTPACAB', 'JF1SKEL', 'TSMJYAH', 'SB1Z53B', 'TMAH351', 'UU1B522', 'VNKKAAC', 'W1NKJ5B', 'WF02XXE', 'JTNACAB', 'TMBLE9N', 'TMBCR9N', 'VR3F3DG', 'W1NFB3D', 'JSAMFH9', 'LGWEEUA', 'TMBEK7N', 'U5YH581', 'VXKUPHM', 'YARKAAC', 'JF1GTEL', 'JMZDMFW', 'LVZZU3P', 'JTMABBB', 'JTNAGAC', 'NLHA751', 'SJNJ12T', 'U5YH2G1', 'VXKUHZK', 'WV2ZZZ7', 'WP0ZZZY', 'KMHC751', 'JTMRW3F', '6FPPXXM', 'KMHYC81', 'VF1ML00', 'W1NKM5B', 'VXKFRHN', 'JHMGR68', 'JTJCKBE', 'JTJDGKC', 'TMBLR9N', 'TMBAM9N', 'TSMLYDH', 'VR7ACYH', 'VNKKBAC', 'W1NDM4E', 'W0VZT6E', 'W0VZCYH', 'W1N1673', 'WBA31CA', 'JF1SLEL', 'JF1GUEL', 'KMHP581', 'JTJCJBG', 'KMHYF81', 'KNAFC81', 'TMBLJ9N', 'NLHBN81', 'TMBLJ8N', 'TMBGK7N', 'VF7SXHN', 'VF3MRHP', 'W1K2060', 'W0VZRHN', 'WBA31EM', 'WBA11EV', 'WVWZZZE', 'KMHP481', 'KMHS481', 'KMHB551', 'JMBXDGL', 'KPT20B1', 'LGWEF6A', 'LVHRS88', 'TMBGR7N', 'VR7ND5G', 'W1NKJ0F', 'W1NWH5A', 'W0VZ45G', 'VYSP010', 'WF0NXXG', 'WBY11CF', 'WBA51EH', 'ZFA5FBB', 'WVGZZZR', 'WUAZZZF', 'JTMD43F', 'KMHM541', 'JSTGBRF', 'TMAJ381', 'VR3UPHP', 'W1NFB0K', 'W1NFD6B', 'WBA21EJ', 'WBS21CS', 'WBY8P21', 'KMHLN41', 'LGWDB61', 'JTMW53F', 'SAL1A2B', 'TMBAR9N', 'TMBER6P', 'VF72RHN', 'VR1F45G', 'VF3DDYH', 'U5YH251', 'W1NKM4H', 'VXKCSHP', 'WV5ZZZT', 'KNACR81', 'KMHC851', 'JMZDR1W', 'JTJCKBF', 'L6TCX2E', 'JTHU95B', 'TMBJG7N', 'TMBLJ7N', 'SALKABB', 'TMAK381', 'U5YPK81', 'VF3LBYH', 'W1K6G8C', 'WBY8P61', 'WF01NBE', 'WBY21CF', 'WVGZZZE', 'LB3FX1S', 'JTMJ63F', 'KNADD81', 'JSAMFJ9', 'NMTBE3B', 'SB1ZC3C', 'U5YPG81', 'U5YH6G1', 'UU10SDP', 'VR3EZZK', 'U5YH651', 'VR1JCYH', 'W1NFF8H', 'W1NFD0K', 'W1N4M4F', 'W1NFB5K', 'W1K6G7G', 'W1KLF0F', 'WBA41EU', 'WBATB41', 'WF0PXXG', 'WDC1671', 'WF03NAE', 'WBATH41', 'YV1LFH5', 'YV1LFK2', 'JTJCMBH', '3MVDMFW', 'JF1GT3L', 'TMBCJ8N', 'NMTKZ3B', 'TMBAH9N', 'TMBAJ9N', 'TMBJG8N', 'VNKKFAF', 'VR1FRHN', 'VR7NDDG', 'W1NKM0F', 'W0VBD6E', 'W1N2476', 'W1K2938', 'W1NKJ8H', 'W1NFF8F', 'W1KLF5G', 'W1NFD4G', 'W1NKJ4H', 'VSSZZZ5', 'W1K5J8E', 'W1K2130', 'WBA15BZ', 'W1VVNKT', 'WBAJU81', 'WBY61EF', 'WBATA61', 'WBA21EU', 'YARVKEH', 'JTMZ53F', 'JN1TBAF', 'KNAC381', 'KMHKN81', 'JTJBGMC', 'LDP31B9', 'JTHB21B', 'LVPC528', 'SC6GM1D', 'TMBJJ7N', 'TSMJYBH', 'TMBAR7N', 'SHHFK68', 'TMBAA8N', 'TMBJB9P', 'TMBLD9P', 'TMAH381', 'SJNF16F', 'VR3F35G', 'VR7BAHP', 'VR1F4DG', 'W1NYC7G', 'W1N4M5B', 'W1K2230', 'W1N2539', 'W1N9M1C', 'W1N4N4F', 'W1NFF8K', 'WF01XXT', 'WDC2539', 'WBA31EU', 'WBA85BZ', 'WBA21EF', 'WBA21EV', 'YARKFAF', 'YARERHN', 'AHTKA3C', 'LRW3E7E', 'JTDKGAG', 'KNACT81', 'JN1TDNF', 'KMHS381', '7JRZSL1', 'KMHHA81', 'JHMRU18', 'JSAAZDA', 'SJNFAAZ', 'TMBER7N', 'TMBCR0N', 'TMBEA6P', 'TMBGP6N', 'TMAK581', 'TMBJJ9P', 'TMBLE7N', 'SB1KA3B', 'TMBJW9P', 'TMAH3H1', 'TMBZZZA', 'TMBCP0N', 'VR7BCZK', 'VR3FPHP', 'U5YH781', 'VR7CGHP', 'VNKKD3D', 'W1N9M0J', 'W1NKM5G', 'W1N4632', 'W0VZT8E', 'W1K6G2D', 'W1NFF3B', 'W1NKM8H', 'W0V0XEP', 'WF0LXXT', 'WBY31AW', 'WDD2906', 'WBA41DT', 'WBA11EG', 'WDD1771', 'WBA61CA', 'WBA21FL', 'WBA41EH', 'WBA11EY', 'ZFACF1C', 'ZN6AW82', 'ZAC5JAC', 'LJNTGUC', 'JTJCJBJ', 'JTDKHAE', 'JN1JGAT', 'JHMFL57', 'KMHP381', 'SADCA2B', 'TMBJH9N', 'SB1MS3J', 'TSMZ93B', 'SALKA9B', 'TMBJM9N', 'NMTBN3J', 'SHHFK78', 'SB1BT76', 'VR3UBYH', 'VR1FCYH', 'VR3F45G', 'VR7EAZK', 'W1N2477', 'W1NGM1C', 'W1N4M1F', 'W1NWC1A', 'W1KLF6D', 'W1N2437', 'WBACV61', 'WBA51EG', 'W1V4478', 'WBS81FK', 'WBA11CH', 'WF0MXXT', 'WBA61EE', 'ZN6AU61', 'ZARPAHD', 'KNAC481', 'KNAB351', 'JTMDW3F', 'KNACB81', 'JTHY65B', 'JTHAAAA', 'JHMGR38', 'KNAAE81', 'KMHB151', 'JMZDR6W', 'KMHHE81', 'KPT60A1', 'TMBLG9P', 'SALZA2B', 'TMBJB9N', 'TMAH081', 'SALCA2B', 'TMBJR0N', 'NMTBE3J', 'SJNFGNJ', 'TMBAH8N', 'SALYA2B', 'VR3KCZK', 'U5YPH81', 'VR7BFZK', 'VF7VZZK', 'VR7BDHP', 'VR7ARHN', 'VF3LPHN', 'W1K1183', 'W1KAF0F', 'W1N2533', 'W1KMJ4H', 'W0LPD5E', 'W0VBD8E', 'W1K6G6B', 'W1KLF5F', 'W1NYC5A', 'W1NKJ5G', 'W1N4N5B', 'W1K2971', 'W1KCG2D', 'W1NKJ0H', 'W1N2436', 'W0VPD5E', 'WBA31EF', 'WDD2130', 'WBS31HJ', 'WF03XXT', 'WBS21ET', 'WBA11DT', 'WBA71AV', 'WBA31EX', 'WBAJU41', 'WBAJD11', 'WBA81BZ', 'YV1UZK5', 'ZARNASC', 'WMW11DJ', 'WVGZZZ1', 'YAREBYH', 'YARVEEH', 'ZFF06VT', 'X96A32R', 'WP1ZZZX', 'ZFACF7C', 'JTMAABA', 'JTMDJRE', 'LRWYGCE', 'LVHRS58', 'AHTBE3C', 'JSAAZCC', 'JMBM5WA', '1C4JJXP', 'JTDACCC', 'LRW3E7F', 'JMZDK6W', 'JTHAABB', 'KNAFD81', 'KPT20A1', 'KNACC81', 'JMZKBAC', 'LB3G43S', '3HGRU17', 'JTMW23F', 'JHMRW28', 'KMHKM81', 'NLAFC16', 'TMB1JCN', 'TMBAG7N', 'SHHFK77', 'TMB1GCN', 'TMBCR8N', 'TMBJG9N', 'TMBAH7N', 'NLHDR51', 'SB1ZS3J', 'NLAFC15', 'TMBCP8N', 'TSMLYEA', 'TMBJJ9N', 'SALEA7B', 'TMBAP8N', 'TMAHC51', 'SJNFAAJ', 'SB1K53B', 'TMBGR6N', 'TMBAL8N', 'SB1BG76', 'TMBJP6N', 'VF3VEEH', 'VF15RSN', 'VF1R870', 'VF37NBH', 'VF72CYH', 'VF3LCYH', 'W1KRJ7J', 'W0VBC6E', 'W1NKJ5F', 'W0VZ4DG', 'W1N4M1D', 'W1NKM5F', 'VXEVZZK', 'VXKUPHP', 'W1NFD3D', 'W1NFB2D', 'W1NGM2C', 'W1KAF0H', 'W1NKM0H', 'W1K6G2B', 'W1N9N0J', 'W1NYC6A', 'W1K3G8E', 'W1N9M0C', 'W1KEG2C', 'VXKFBYH', 'W0VZM6E', 'VXKF3DG', 'W1KEG1C', 'W1K8P9A', 'WBA31AA', 'WBACY61', 'WBA4M91', 'WBA11FK', 'WBATX75', 'WF05XXG', 'WDD2221', 'WBAGT81', 'WBA81DP', 'W1VVLGF', 'WBATC61', 'WDC2533', 'WBA61DP', 'WBA11AW', 'WDC1679', 'WBA31DZ', 'W1V9072', 'WDD2220', 'WBA21EM', 'W1VVNLT', 'WBA41EX', 'WBA31AX', 'WBA71GP', 'WBA81CA', 'YV1LFH7', 'YV1UZL1', 'ZD3TE16', 'WV2ZZZE', 'WUAZZZG', 'YV1UZH5', 'WMW21GC', 'YV1UZK2', 'ZACNJEC', 'ZFA3340', 'WVW2ZZZ', 'YV1ZWBF', 'YV1LF06', 'WV2ZZZ2', 'YV12ZEK', 'KPAXA1E', '1GYS48K', '7SAXCCE', 'KMHP281', 'JSAZDED', 'KNAC581', 'LVYPSA3', 'JMZKEN9', '6FPF2CM', 'LMXF18B', '1C4SDJC', 'L6TE310', 'JTJBJRB', 'L6TE21S', 'HESXA2C', 'LDP95C9', '7SVAAAB', 'JMBXTGK', 'KNAE551', 'LDP29H9', '3HGRU18', 'JTDAF4E', '1C6SRFH', 'JTMRJRE', '1C4RJYE', 'JHMRT58', 'KNARM81', 'SB1KT3J', 'TMBAG9N', 'TMBJJ0N', 'SHHFK67', 'TMBEK6P', 'MMCJJKL', 'TMBAN0N', 'TMAH1H1', 'NLHBU51', 'TMBCT8N', 'TMBGK9N', 'TMBAL0N', 'TMBLK9N', 'TMBLR8N', 'TMBNH7N', 'TMBCJ9N', 'TMBJN9N', 'TMBJA8N', 'TNBCJ8N', 'NLHBR81', 'TMBAJ7N', 'TMBJH7N', 'TMBLR0N', 'NLAFC85', 'TMBCE9N', 'TMBJC7N', 'SALEA8B', 'MMCJLKL', 'SALWA2B', 'SALRA2B', 'SHHFK97', 'VR1URHN', 'VR3F4DG', 'VR7A45G', 'VF3PSCF', 'UU14SD8', 'VR3KBDG', 'VR7AJEH', 'VF3M4DG', 'VF3LBBH', 'VF17RBF', 'VF3CUHN', 'VR3FJEH', 'VR3ECYH', 'USYH481', 'VR7A4DG', 'VF1VE00', 'VF3VZZK', 'UU1HSD3', 'VR7ARHP', 'VF3LCBH', 'VR1UJZK', 'W1NWM0A', 'W1K6X7K', 'W1K6X7G', 'VXKUDYH', 'W1N4N8J', 'W1K6G3D', 'W1KVK8B', 'W1NKJ2D', 'W1K3G8H', 'W1N9N0K', 'W1N4N1D', 'W1NFF5K', 'W1K3F8E', 'W1KEG1B', 'W1K2573', 'W1KAF4D', 'W1K2132', 'W1NFF2D', 'W1NKM0K', 'W0LGM5E', 'W1N4633', 'W00V7H9', 'W1K1771', 'W1KMJ5B', 'W1K1770', 'W1NDM2E', 'W1NFD0G', 'W1KLF5B', 'W1KLF2D', 'W1NFB6E', 'VXKCMZY', 'W0VZJEH', 'W1NWH1A', 'W1KAF8H', 'W1NFB5E', 'W1KAF4H', 'VSKCTND', 'W1N0J5D', 'VR7NCHN', 'W0VBF6E', 'W1K7X6B', 'WBY11HG', 'W1VHK0G', 'WDD2132', 'WBAKS61', 'WBA31DT', 'WBAKS41', 'WBS81GV', 'WBAHT91', 'WBS11ET', 'W1V5K2F', 'WF06XXW', 'WBA25DP', 'WBACX61', 'WBSCY01', 'WBACW21', 'WBS41AY', 'WBACW01', 'WAP41EM', 'WBACR61', 'WBS11EC', 'WBA81GM', 'WBY51CF', 'WF0EXXS', 'WBY31FK', 'WBA7S61', 'WBA25DN', 'WDF4478', 'WBSAE01', 'WBS41AZ', 'WBA55DP', 'WBA11EE', 'WDD2573', 'WAUZZZ8', 'WBA48FU', 'WBS11GB', 'WBA48FF', 'W1VVMLE', 'WBA41EG', 'WBS11DM', 'WF02K8H', 'WBAVJ51', 'WBA31FZ', 'WBA31FL', 'WBY51EJ', 'WBA38DY', 'WMW31DK', 'ZFA3560', 'ZN6PMDA', 'YV1UZM1', 'YV1LFM1', 'ZN6RMDE', 'ZN6PMDD', 'ZD3E7M9', 'WMWYU71', 'ZARPAHP', 'ZARPAHE', 'YV1XKED', 'ZARFAHB', 'WVWZZZ1', 'ZAA5AVA', 'ZFABF5B', '3HGRU87', 'LMAXA14', 'JNTACAB', '5XYRGDL', 'KMHMY81', '1C6JJTF', 'KPT80B1', 'LGWEELA', 'KMHWH81', '6FPP2CM', 'JTDKB3F', '5LMJJ2L', 'JTMHX01', 'JTMAA7B', 'JTHABAB', '1C4PJXF', 'JHMRW27', 'JSAGJB7', 'JHMRW17', 'LGWEEFU', 'JN1JFNT', 'JS1EM12', 'JN1GANR', 'KMHKH81', 'JHMRU17', '5TDL33C', 'JTJCBGA', 'JS1EK12', 'JMZND6E', 'JS1EJ11', 'KPT00A1', '1FATP8R', 'JTJYWRB', 'LFVVB9E', 'JHMGK38', '1C4JJXR', 'KMHP681', 'KNAGW41', 'JTHAAAE', 'JTJAABA', 'JH2RH12', 'JTHKPAA', 'JH2RH11', 'JMZGLF9', 'JH2PC69', 'JFISKEL', 'JTMWRRE', 'JTJHY7A', '6FPFXXM', '1C4HJXE', '5YJSA7E', 'JNTB23H', 'KNADE51', 'LDP29C9', '5TDGZRA', 'KNAGW81', 'JS1EM11', 'JF1GT7L', '3MDDJ6H', 'JTMAB7B', 'JN1TCNS', 'JTNB23N', '3GCUDEE', 'JF1BS9L', '1GYS47K', 'JF1AABA', 'JMZDR1M', 'JCAZCED', 'JN1TAAF', 'JNTABAC', '1C4RJXS', '1C4PJDD', 'FV1HJD4', 'JNZKL0H', 'F1HJD20', 'JF1SJ5L', 'LYVUZK9', 'TMBGP7N', 'SD7VUJB', 'TMBAHSN', 'SCFRMFG', 'SCBDJ33', 'SCBCX13', 'SCBCN13', 'TMBLS9N', 'SCBCF13', 'TMBAH0N', 'SCBBS53', 'SJAHB14', 'SCATK21', 'TMBGH7N', 'SCA664S', 'TMB1JBN', 'SCA21HA', 'SMLYDD1', 'SC6GN3D', 'NMTKY3B', 'SC6GN2D', 'TMBEE6P', 'TMB1HCN', 'SJNFDNJ', 'SC6GM1A', 'TMB1GBN', 'TMSLYEH', 'TMB1BBN', 'SHHFK98', 'TSLMYDD', 'TMBARSN', 'TMBAR0N', 'MMCXTA0', 'MLHRH15', 'SB1ME3J', 'SD7VUJD', 'TMBLH9N', 'TMBGF7N', 'TMBEG6N', 'TMBLG7N', 'TMBJP7N', 'TSMJYBA', 'TMBJF7N', 'TMBAP7N', 'TMBCJ0N', 'SB1ET76', 'SJNFEAJ', 'SB1EG76', 'NMT53BX', 'TMBANSN', 'SJNFDAJ', 'TMBAN9N', 'TMBJK8N', 'TMBCR7N', 'TMBJB7N', 'TMBJR9N', 'TMBAGSN', 'TSMLYD0', 'TMBAU8N', 'TMBGE7N', 'TMBGR9N', 'TMBLU9N', 'SJAA514', 'TMBAK9N', 'SIJNTAA', 'TMBJR6N', 'SHSRE57', 'TMAH1HD', 'TMSLYDD', 'SALCA2D', 'NLAFC18', 'TMBEH6N', 'TSMLYDA', 'TMBCK8N', 'TMBLS8N', 'SADHA2B', 'MMCXNA0', 'SADFA2B', 'SHHFK37', 'MLHJC92', 'LXMA14A', 'VR1UCYH', 'VF1RF80', 'UU15SDL', 'VNKKJ0D', 'U5YOV81', 'VF1RB00', 'UU1DJFF', 'VF3MCBH', 'UU10SDT', 'VF3YEBN', 'VR1JJEH', 'VF70BBH', 'VR3KCKZ', 'UU1HSD1', 'VR7CPZY', 'UU1DFJ0', 'VF3YB2M', 'VF1WK00', '-VF1JL0', 'UU17SDK', 'VF3VFAH', 'VGAF1AD', 'VR1RHN0', 'VR7CBZY', 'VF1RFBO', 'VF3FPHN', 'VF3CUBH', 'VFRHN00', 'VF3CCHN', 'VF1AGVY', 'VF3CCHM', 'VR3FHEH', 'VF3FCYH', 'VF7SZYH', 'VF3EDYH', 'VF7VEEH', 'UU15SDM', 'VF3DDBH', 'UU15SD8', 'VF15RBJ', 'UU10SDX', 'VF12R05', 'USYPU81', 'VF12R03', 'USYH151', 'VF12R01', 'VR3SUSH', 'VE7BCZK', 'VCF1EBE', 'VF1RJ00', 'VBKTU74', 'VF7SXYH', 'UUIDJF0', 'VF72CBH', 'UU1L522', 'VF7YCAN', 'VFIRJA0', 'VFIRHN0', 'VR3FRHP', 'VF3CUHM', 'U5Y4F15', 'W1NFB8F', 'W1N4N1F', 'VSKDAAC', 'W0VPE9E', 'W1KLF0E', 'W1V3H6F', 'W0VZS6E', 'W1NFB4G', 'W1KLF0K', 'VXFVLEH', 'W1K3F4F', 'W1N4M8J', 'VXEVAYH', 'W1N0J1F', 'W1NFD6E', 'W1KZH1H', 'W1NDM2D', 'W0VECYH', 'W1K5J1C', 'W1KZF8H', 'W1N4N8E', 'W0VBF8E', 'W1N9N0C', 'W1K2951', 'W1N9N0B', 'W0VBE6E', 'W1KCG4E', 'W1KZF8A', 'W1KZF6B', 'VXEVEEH', 'W1KZF5K', 'W1KAF0K', 'VRUSHNS', 'W1K7X5K', 'W0VZCBH', 'W0V7DEN', 'W1K5J8G', 'W1KZF0E', 'W1K5J8F', 'W1NKJ0K', 'W1K5J4F', 'W1K2906', 'VXKFRHP', 'W0LPC5E', 'VXKFPHP', 'W0LGT5E', 'VXKFMZK', 'W0LGM8E', 'W1KEG3C', 'W0LGM6E', 'W1K6G6K', 'W1NFB8K', 'W0LBE8E', 'W0VZT6G', 'W0LBD8E', 'W1KCG5F', 'W0L7H9E', 'W1KCG3E', 'W1KVK8A', 'W1N9M1D', 'W0L6VZN', 'W0VZS6G', 'W1K2383', 'W1KAF5F', 'W00V7HS', 'W1N4N8H', 'W1K2324', 'W1NGM3C', 'W00V7D9', 'VYSP01H', 'W1K3G4F', 'W1NKM2D', 'W1KMK6B', 'W1KMJ6B', 'W1K3F5B', 'W1NFD2D', 'W1K6F7G', 'W0V7HSE', 'W1KZF0F', 'W1K7X7K', 'WBA11GR', 'WBAKV21', 'WBS21DM', 'WBA6N51', 'WBA61CM', 'WBS31AZ', 'WF0FXXT', 'W1VVNKE', 'WBA61AT', 'WBATY95', 'WBA5V31', 'WBA7U21', 'WBA5U91', 'WBA7R81', 'WBA5P31', 'WBA11AR', 'WBAFY41', 'WBA7C81', 'WBA51GN', 'WBA71BJ', 'WBA51FZ', 'WBA71AM', 'WDB4632', 'WBATX31', 'WDC2923', 'WBA51DP', 'WBA21DP', 'WBA51CM', 'WBA11FJ', 'WBA51BL', 'WBA7L11', 'WBA51AL', 'WBA11BJ', 'WBAKV61', 'WBA11AL', 'WBA4M51', 'WDD2052', 'WBAJY61', 'W1VVNLS', 'WBACW81', 'W1VVMKS', 'WBA41FU', 'WBAYK71', 'WBY81EH', 'WBAYH51', 'WBY7X41', 'WBAUZ31', 'WBY71GM', 'WBAJV61', 'WDD2462', 'W1V5K6F', 'WBA41BX', 'WBA7V81', 'WBA41AS', 'WBAJC51', 'WBA41AP', 'WBA38FS', 'WBS61AY', 'W1V4477', 'WBS41HK', 'WBA7M91', 'WBA7K31', 'WF01XXE', 'WBA11BZ', 'WF0EXXW', 'WDC1660', 'WBA11AM', 'WBY51GM', 'WBS21EC', 'WBABC21', 'WBA7D21', 'WBA85DP', 'WAUC4AF', 'WBY41HD', 'WBA7C61', 'WBY41FK', 'WBA71HB', 'WBAJJ31', 'WBA71FY', 'WDD2383', 'WBAYN91', 'WBA31AM', 'W1VT1JC', 'WBA31AJ', 'WBA31AE', 'WBAVJ91', 'WBA31AD', 'WBAVJ11', 'WDD2229', 'WBAUJ51', 'WBA25GR', 'WF0DXXS', 'WBA81FJ', 'WBA71AB', 'WBAJH71', 'WBATS11', 'WF0RPCE', 'WBA21EY', 'WDC1569', 'WBA65GP', 'WBSJU01', 'WBAGV41', 'WBSDZ01', 'WBA31GW', 'WBA31GP', 'WBA31GG', 'WMW31DH', 'YV1XZEH', 'YV1LFA3', 'YV1PSA8', 'ZD3E7M4', 'ZARPAHB', 'ZFA5FBA', 'ZARNASD', 'ZPBEC3Z', 'WMW41BT', 'ZFANFBB', 'WMW11GD', 'ZARNASB', 'YV1XKER', 'ZARNASA', 'WVZZZZS', 'YV1PZ68', 'ZARFAHL', 'WF0TK3S', 'YARVSZK', 'WMW31GA', 'ZAREAFG', 'YV1ZW25', 'WVWZZZ7', 'YV1XZK8', 'ZAREAFD', 'ZPBEB3Z', 'ZAPNPC2', 'ZN6TU61', 'WVW2Z2Z', 'WVW22ZZ', 'YARECYH', 'ZAMYR56', 'ZAM56YR', 'ZFAEFAC', 'YV1UZBF', 'ZFACF7G', 'WJGZZZC', 'ZAANAVB', 'WVG2ZZZ', 'WMW51BR', 'WMW31GD', 'YAREZZK', 'WMW31BS', 'WMW21BS', 'YARVEAH', 'WMW11GC', 'ZD3EC16', 'WV2ZZ2K', 'YV1XZK7', 'ZFABF5J', 'YV1XZBB', 'YV1LFBM', 'YV1XZA6', 'WUAZZZ4', 'YV1ZZK5', 'YV1ZZA8', 'ZFACF1B', 'YV1FH7V', 'YV1UZH4', 'WOVEDYH', 'YV1UZBM', 'WMWYY91', 'ZD3EC18', 'WMWXR91', 'WMWXP31', 'WMWXJ11', 'YV1PWA8', 'WMWLV31', 'WMW81GC', 'WMW81BR', 'WF0VXXT', 'WMW71DH', 'WMW51GA']
+
+MEDDUTYTRUCK = ['ZCFC660', 'XLRAEL2', 'ZCFC672', 'ZCFC170', 'WDB9700', 'ZCFC670', 'ZCFA75B', 'TYBFEB7', 'TYBFECX', 'в„–3CST74', 'ZCFA675', 'ZCFA80D', 'WMA14DZ']
+
+# --- 2. FUEL TYPE KEYWORDS ---
+HYBRID_KEYWORDS = [
+    "hybrid",
+    "reev",
+    "zr-v",
+    "hsd",
+    "hev",
+    "phev",
+    "mhev",
+    "бензин/електричество",
+    "бензин/електричество/внг",
+    "хибрид",
+    "petrol/electric",
+    "phev (plug-in)",
+    "erev",
+    "boost",
+    "e:hev",
+    "i-mmd",
+    "plug-in",
+    "дизел/електричество",
+]
+
+ELECTRIC_KEYWORDS = [
+    "electric",
+    "електродвигател",
+    "електромотор",
+    "електрически",
+    "ev",
+    "bev",
+    "e-tron",
+    "eq",
+    "tesla",
+    "e-tech",
+    "i4",
+    "i5",
+    "ix",
+    "ioniq",
+    "bz4x",
+    "eqs",
+    "eqb",
+]
+
+DIESEL_KEYWORDS = [
+    "diesel",
+    "дизел",
+    "дизел/биодизел",
+    "ecoblue",
+    "scania",
+    "tgx",
+    "man",
+    "cdi",
+    "dci",
+    "hdi",
+    "bluehdi",
+    "d-4d",
+    "tdi",
+    "2.8d",
+]
+
+PETROL_KEYWORDS = [
+    "petrol",
+    "sandero",
+    "shine",
+    "шайн",
+    "ситирей",
+    "1,5t",
+    "gasolina",
+    "puretech",
+    "tgdi",
+    "tsi",
+    "tfsi",
+    "ecoboost",
+    "бензин",
+    "petrol/gas",
+    "eco-g",
+]
+
+GAS_KEYWORDS = [
+    "cng",
+    "tgi",
+    "g-tec",
+    "lpg",
+    "gas",
+    "внг",
+    "eco-g",
+]
+
+# HYBRID_KEYWORDS = ["hybrid", "hev", "phev", "mhev", "erev", "boost", "e:hev", "i-mmd", "plug-in", "petrol/", "РґРёР·РµР»/", "РµР»РµРєС‚СЂРёС‡РµСЃС‚РІРѕ", "electric/"]
+
+# Split Electric into long brand names and short alphanumeric codes for maximum accuracy
+ELECTRIC_BRANDS = ["electric", "e-tron", "etron", "e-tech", "etech", "tesla", "ioniq", "bz4x",
+                   "aiways",  "fisker" , "ev2", "lucid motors", "nio" , "polaris" , "rimac" ,  "seres" , "tesla" , "xpeng", "jiayuan",
+                   "elaris" , "e.go", "spring", "zoe",
+                   "id.3", "id3", "id.4", "id4", "id.5", "id5", "id.6", "id6", "id.7", "id7",
+                   "id.buzz", "idbuzz", "id.unyx", "idunyx", "e-up!", "eup!", "gtx",
+                   ]
+
+# ELECTRIC_VINS = ['WF0EXXTTRB', 'TMAK281GFP', 'YARENZKUZR', 'KNACP811FR', 'VR3UHZKXZP', 'VXKUKZKXZN', 'VF1AG00026', 'VF1AG00086', 'VF1AG000', 'UU1DBG00', 'VR3UHZKXZP', 'JMZDR1WBJ0', 'VXKUHZ', 'KMHKR8', 'VR3UK', 'VF1AG00', 'VF1RCB0', 'UU1DBG0', 'VYSP010', 'KMHKR81', 'YARENZK', 'XP7YGCE', 'TMAH881', 'VR3UKZK', 'KMHB151', 'VR3UHZK', 'KNAFC81', 'VXKUKZK', 'KMHB551', 'KMHKN81', 'JTMABBB', 'WVWZZZE', 'VXKUHZK', 'KMHM541', 'LVRHDAE', 'W1NDM4E', 'WBY11CF', 'WBY8P21', 'WVGZZZE', 'TMAK381', 'WBY8P61', 'JMZDR1W', 'JTMABBB', 'WVWZZZE', 'VXKUHZK', 'KMHM541', 'LVRHDAE', 'W1NDM4E', 'WBY11CF', 'WBY8P21', 'WVGZZZE', 'TMAK381', 'WBY8P61', 'JMZDR1W', 'VR3EZZK', 'VR7ENZK', 'WBY21CF', 'W1K2938', 'WBY61EF', 'L6TE310', 'W1KFJ4E', 'VR3KCZK', 'JTMADDF', 'W1N9M1C', 'W1N9M0J', 'LRW3E7E', 'JN1TBAF', 'VR7BCZK', 'UU1DBF0', 'TMAK581', 'KNAC381', 'LDP43A9', 'SJNFAAZ', 'W1N9N0J', 'JN1TDNF', 'W1NWM0A', 'KNAFE81', 'WBY71GM', 'W1KFJ1D', 'LDFHGT1', 'W1N2437', 'W0VENZK', 'KNAFD81', 'WMW11DJ', 'VR7BFZK', 'W1K2971', 'VF3V1ZK', 'VR7EAZK', 'KMHMY81', 'KNAC481', 'KMHKM81', 'YARVTZK', 'W1NGM2C', 'L6TE21S', 'W1N9M0C', 'YV12ZEK', 'VXEVZZK', 'W0VEAZK', 'WBY31FK', 'VR1UJZK', 'KNCWCX7', '7SAXCCE', 'KNAC581', 'VSKHAAM', 'WBY51EJ', 'VSKYAAM', 'LVAJ2N1', 'VYFENZK', 'WMW81GC', 'TMBJC7N']
+ELECTRIC_VINS = ['wf0exxttrb', 'tmak281gfp', 'yarenzkuzr', 'knacp811fr', 'vr3uhzkxzp', 'vxkukzkxzn', 'vf1ag00026', 'vf1ag00086', 'vf1ag000', 'uu1dbg00', 'vr3uhzkxzp', 'jmzdr1wbj0', 'vxkuhz', 'kmhkr8', 'vr3uk', 'vf1ag00', 'vf1rcb0', 'uu1dbg0', 'vysp010', 'kmhkr81', 'yarenzk', 'xp7ygce', 'tmah881', 'vr3ukzk', 'kmhb151', 'vr3uhzk', 'knafc81', 'vxkukzk', 'kmhb551', 'kmhkn81', 'jtmabbb', 'wvwzzze', 'vxkuhzk', 'kmhm541', 'lvrhdae', 'w1ndm4e', 'wby11cf', 'wby8p21', 'wvgzzze', 'tmak381', 'wby8p61', 'jmzdr1w', 'jtmabbb', 'wvwzzze', 'vxkuhzk', 'kmhm541', 'lvrhdae', 'w1ndm4e', 'wby11cf', 'wby8p21', 'wvgzzze', 'tmak381', 'wby8p61', 'jmzdr1w', 'vr3ezzk', 'vr7enzk', 'wby21cf', 'w1k2938', 'wby61ef', 'l6te310', 'w1kfj4e', 'vr3kczk', 'jtmaddf', 'w1n9m1c', 'w1n9m0j', 'lrw3e7e', 'jn1tbaf', 'vr7bczk', 'uu1dbf0', 'tmak581', 'knac381', 'ldp43a9', 'sjnfaaz', 'w1n9n0j', 'jn1tdnf', 'w1nwm0a', 'knafe81', 'wby71gm', 'w1kfj1d', 'ldfhgt1', 'w1n2437', 'w0venzk', 'knafd81', 'wmw11dj', 'vr7bfzk', 'w1k2971', 'vf3v1zk', 'vr7eazk', 'kmhmy81', 'knac481', 'kmhkm81', 'yarvtzk', 'w1ngm2c', 'l6te21s', 'w1n9m0c', 'yv12zek', 'vxevzzk', 'w0veazk', 'wby31fk', 'vr1ujzk', 'kncwcx7', '7saxcce', 'knac581', 'vskhaam', 'wby51ej', 'vskyaam', 'lvaj2n1', 'vyfenzk', 'wmw81gc', 'tmbjc7n']
+
+ELECTRIC_CODES  = ["ev", "bev", "eq", "i4", "i5", "ix", "id.4", "i3", "ix1", "ix2", "ix3","eqa", "eqb", "eqc", "eqe", "eqs", "eqv",  "enyaq", "elroq", "epiq", "taycan", "r1t", "r1s", "r2",
+                   "model 3", "model y", "model s", "model x", "cybertruck",
+                   "ioniq 5", "ioniq 6", "ioniq 9", "ev 3", "ev 4", "ev 5", "ev 6", "ev 9",
+                   "atto 3", "dolphin", "byd seal", "seal", "bydseal",
+                   "macanelectric", "enyaq", "elroq", "epiq", "peaq", "ex30", "ex90", "ex60", "es90", "c40",
+                   "atto3", "atto", "bydseal", "byd han", "byd tang", "tang", "dolphin", "sealion",
+                   "leapmotor", "t03", "c10", "zeekr", "zeekr001", "zeekrx", "xpeng", "g6", "g9", "p7", "nio", "el6",
+                   "et5", "et7", "zoe",
+                   "omoda", "e5", "changan", "skywell", "aion", "maxus", "eDeliver", "seres", "voyah", "free", "lucid",
+                   "rivian", "r1t", "r1s", "e-rifter"
+                   ]
+
+
+WEIGHT_RANGE = ""
+
+
+
+MILEAGE = {
+    "Car": 10000,
+    "LgtComrclVeh":30000,
+    "MedDutyTruck":60000,
+    "HvyDutyTruk": 100000,
+    "Motorbike": 3000,
+    "NoCat": "",
+    "Motorcycle": 3000,
+    "Trailer": "",
+    "Non transport":""
+}
