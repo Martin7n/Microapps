@@ -3,11 +3,33 @@ from esg_vehicles.data_collections.data_id2 import LCV_VIN, HGV_VIN, CAR_VIN, ME
 from esg_vehicles.data_collections.data_id4 import CATEGORIES_BY_SOURCE, MAIN_CATEGORIES
 from esg_vehicles.processors.data_helpers import text_normalization
 
+from esg_vehicles.models.main_class import ESGRecord
+from esg_vehicles.processors.weight_check import weight_normalization
+
 
 #1st stage
+
+def category_handler(record: ESGRecord):
+    eq_type = record.equipment_type
+    eq_vin = record.vin
+    eq_description = record.equipment
+    eq_weight = record.weight
+    eq_weight_measure = record.weight_measure
+
+    check_by_exact_type = ""
+    if eq_type is not None and eq_type!="-":
+        check_by_exact_type = category_check_by_type_id_match(eq_type)
+    if eq_weight is not None and eq_weight!="-":
+        weight = weight_normalization(eq_weight, eq_weight_measure)
+        record.weight_measure_update = "kg"
+        record.detected_weight = weight
+
+
+
 def category_check_by_type_id_match(eq_type):
     if eq_type in CATEGORIES_BY_SOURCE:
         return CATEGORIES_BY_SOURCE[eq_type]
+
 
 
 def category_check_by_type_search(eq_type):

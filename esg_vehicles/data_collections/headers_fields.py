@@ -10,6 +10,7 @@ HEADER_MAP = {
     "equipmentID": "equipment_id",
     "equipmentAllocationID": "equipment_allocation_id",
     "Model of equipment": "model",
+    "Equipment": "equipment",
     "VIN/SerialNum": "vin",
     "Reg NB": "registration",
     "Weight of equipment": "weight",

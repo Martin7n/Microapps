@@ -53,7 +53,7 @@ def write_records(filename, records):
     wb = Workbook()
     ws = wb.active
     ws.title = "ESG Cleaned"
-
+    a_counter_is_never_too_much = 0
     if not records:
         return
 
@@ -63,6 +63,7 @@ def write_records(filename, records):
 
 
     for record in records:
+        a_counter_is_never_too_much +=1
         row = []
         for header in original_headers:
             value = record.original.get(header)
@@ -91,6 +92,7 @@ def write_records(filename, records):
 
     wb.save(filename)
 
+    return a_counter_is_never_too_much
 
 def data_handler(filename, output_file, type_processing="esg_main"):
     records = read_parse_to_class(filename)
@@ -104,9 +106,9 @@ def data_handler(filename, output_file, type_processing="esg_main"):
     # except Exception as e:
     #     print(e)
 
-    write_records(output_file, records)
+    counter = write_records(output_file, records)
 
-    return f"{len(records)} written successfully!"
+    return f"{counter} written successfully!"
 
 
 

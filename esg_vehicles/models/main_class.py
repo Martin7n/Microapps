@@ -18,6 +18,7 @@ class ESGRecord:
     brand: str | None = None
     equipment_id: str | None = None
     equipment_allocation_id: str | None = None
+    equipment: str | None = None
     model: str | None = None
     vin: str | None = None
     registration: str | None = None
@@ -36,7 +37,7 @@ class ESGRecord:
     detected_category : str | None = None
     detected_seats : int | None = None
     detected_weight : str | None = None
-    weight_measure_update : float | None = None
+    weight_measure_update : str | None = None
     detected_emissions : float | None = None
     detected_fuel : str | None = None
     green : str | None = None
