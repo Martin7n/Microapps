@@ -1,10 +1,118 @@
-import os
-import openpyxl
+from datetime import datetime, date
 
-from csv_eea_co.eaa_data_handler import field_list
+import openpyxl
+from openpyxl.reader.excel import load_workbook
+from openpyxl.workbook import Workbook
+
 from esg_vehicles.brand_model import brands_t
-from esg_vehicles.main_esg import car_data,object_data_update
-from esg_vehicles.weight_check import classify_by_weight, weight_normalization
+from esg_vehicles.data_collections.headers_fields import HEADER_MAP, OUTPUT_FIELDS
+from esg_vehicles.processors.data_helpers import prepare_excel_value
+from esg_vehicles.models.main_class import ESGRecord
+from esg_vehicles.main_esg_data_update import object_data_update
+from esg_vehicles.processors.processor import process_records
+
+
+def read_parse_to_class(filename):
+    wb = load_workbook(filename, data_only=True)
+    ws = wb.active
+
+    headers = next(
+        ws.iter_rows(
+            min_row=1,
+            max_row=1,
+            values_only=True
+        )
+    )
+
+    records = []
+
+    for row in ws.iter_rows(
+            min_row=2,
+            max_row=ws.max_row,
+            values_only=True):
+
+        row_dict = dict(zip(headers, row))
+
+        values = {}
+
+        for excel_name, python_name in HEADER_MAP.items():
+            values[python_name] = row_dict.get(excel_name)
+
+        # record = ESGRecord(**values)
+        row_dict = dict(zip(headers, row))
+        record = ESGRecord(original=row_dict, **values)
+
+        records.append(record)
+    # print(records)
+    return records
+
+
+
+
+def write_records(filename, records):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "ESG Cleaned"
+
+    if not records:
+        return
+
+    original_headers = list(records[0].original.keys())
+    added_headers = list(OUTPUT_FIELDS.keys())
+    ws.append(original_headers + added_headers)
+
+
+    for record in records:
+        row = []
+        for header in original_headers:
+            value = record.original.get(header)
+            row.append(prepare_excel_value(value))
+        # row = [
+        #     record.original.get(header)
+        #     for header in original_headers
+        # ]
+
+        # Added data
+        for _, attribute in OUTPUT_FIELDS.items():
+
+            value = getattr(record, attribute)
+
+            # convert lists for Excel
+            if isinstance(value, list):
+                value = "; ".join(map(str, value))
+
+            row.append(prepare_excel_value(value))
+
+        ws.append(row)
+    for row in ws.iter_rows():
+        for cell in row:
+            if isinstance(cell.value, (datetime, date)):
+                cell.number_format = "DD.MM.YYYY"
+
+    wb.save(filename)
+
+
+def data_handler(filename, output_file, type_processing="esg_main"):
+    records = read_parse_to_class(filename)
+
+    process_records(records, type_processing)
+
+    # try:
+    #     print(records[0].brand)
+    #     print(records[0].original)
+    #     print(records[0].weight)
+    # except Exception as e:
+    #     print(e)
+
+    write_records(output_file, records)
+
+    return f"{len(records)} written successfully!"
+
+
+
+
+
+
 
 
 def xls_parse_test(file):
@@ -145,6 +253,15 @@ def xls_writer(data):
 if __name__ == '__main__':
     # xls_parse_base(r"C:\drob\ress.xlsx")
     # xls_parse_sample(r"C:\drob\sample.xlsx")
-    xls_parse_test(r"C:\drob\orf.xlsx")
+    # xls_parse_test(r"C:\drob\orf.xlsx")
     #Todo: add checks for brands and types from EAA db.
     #TODO - 2: export keywords []
+
+    # records = read_parse_to_class(r"C:\drob\sample_fordev.xlsx")
+
+    data_handler(r"C:\drob\sample_fordev.xlsx",
+                 r"C:\drob\upadted.xlsx")
+
+    # print(records[0].brand)
+    # print(records[0].original)
+    # print(records[0].weight)

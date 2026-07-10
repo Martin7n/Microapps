@@ -1,17 +1,15 @@
-from esg_vehicles.data_id import BRAND_ALIASES, BADGE_PATTERN
-from esg_vehicles.data_id3 import HYBRID_KWORDS, SORTED_BRAND_LOOKUP
+from esg_vehicles.data_collections.data_id import BRAND_ALIASES
+from esg_vehicles.data_collections.data_id3 import SORTED_BRAND_LOOKUP
+from esg_vehicles.processors.data_helpers import keyword_extract_list, text_normalization
 
 
 def norm(x):
     return (str(x) or "").lower()
 
-def extract_brand(brand, model, description):
-    texts = [norm(brand),norm(model),norm(description)]
-
-
-
+def extract_brand(combined_text:[]):
     # strongest signal first
-    for text in texts:
+    normalized_text = keyword_extract_list(combined_text)
+    for text in normalized_text:
         for alias, canonical in BRAND_ALIASES.items():
             if alias in text:
                 return canonical[0]
@@ -22,15 +20,17 @@ def extract_model(text, brand):
     if not brand:
         return None
 
-    text = text.lower()
+    text = text_normalization(text)
     text = text.replace(brand.lower(), "")
+    #not very useful, too many "parasite words"
 
     return " ".join(text.split()).strip() or None
 
 def brand_model(brand, model, description):
-    text = " ".join([brand, model, description]).lower()
+    text = keyword_extract_list([brand, model, description])
+    all_text = " ".join([brand, model, description])
     extracted_brand = extract_brand(text)
-    extracted_model = extract_model(text, extracted_brand)
+    extracted_model = extract_model(all_text, extracted_brand)
     return extracted_brand, extracted_model
 
 def brand_model_extraction(brand, model, description):
@@ -78,5 +78,5 @@ if __name__ == '__main__':
     model = "A4 2.0 TDI quattro"
     description = "Audi A4 2.0 TDI quattro"
 
-    print(extract_brand(brand, model, description))
+    print(extract_brand([brand, model, description]))
     print(extract_model(description, brand))
