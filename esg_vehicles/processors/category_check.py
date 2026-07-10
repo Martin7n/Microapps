@@ -1,6 +1,6 @@
-from esg_vehicles.data_collections.data_id import VEHICLE_WEIGHT_CLASSES
 from esg_vehicles.data_collections.data_id2 import LCV_VIN, HGV_VIN, CAR_VIN, MEDDUTYTRUCK
-from esg_vehicles.data_collections.data_id4 import CATEGORIES_BY_SOURCE, MAIN_CATEGORIES
+from esg_vehicles.data_collections.categories_vehicles import CATEGORIES_BY_SOURCE, MAIN_CATEGORIES, \
+    VEHICLE_WEIGHT_CLASSES
 from esg_vehicles.processors.data_helpers import text_normalization
 
 from esg_vehicles.models.main_class import ESGRecord

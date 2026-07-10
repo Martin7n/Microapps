@@ -1,5 +1,4 @@
-from esg_vehicles.data_collections.data_id import BRAND_ALIASES
-from esg_vehicles.data_collections.data_id3 import SORTED_BRAND_LOOKUP
+from esg_vehicles.data_collections.brand_models import SORTED_BRAND_LOOKUP, BRAND_ALIASES
 from esg_vehicles.processors.data_helpers import keyword_extract_list, text_normalization
 
 

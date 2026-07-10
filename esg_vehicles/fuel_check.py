@@ -1,6 +1,6 @@
 from esg_vehicles.data_collections.data_id import FUEL_SIGNALS
 
-from esg_vehicles.data_collections.data_id3 import TECHNOLOGY_FUEL_MAP, HYBRID_KWORDS, BEV_MODELS, HYBRID_MODELS, DIESEL_MODELS
+from esg_vehicles.data_collections.brand_models import TECHNOLOGY_FUEL_MAP, HYBRID_KWORDS, BEV_MODELS, HYBRID_MODELS, DIESEL_MODELS
 
 
 def normalize(text):

@@ -1,4 +1,10 @@
-import re
+''''
+1. exact model match
+2. brand + technology
+3. technology alone
+4. generic fuel keyword
+'''
+
 
 BRAND_ALIASES = {
     "bmw": ["bmw", "бмв"],
@@ -582,465 +588,224 @@ ev_models = {
     for brand, models in ev_models.items()
 }
 
-if "model 3" in ev_models["tesla"]:
-    print("It's an EV!")
-
-# Iterate over all models
-# for brand, models in ev_models.items():
-#     for model in models:
-#         print(f"{brand} {model}")
 
 
-fuel_identifiers = {
-    "electric": [
-        "ev", "bev", "electric", "e-tron", "eq", "edrive",
-        "ioniq", "id.", "id ", "model s", "model 3",
-        "model x", "model y", "leaf", "zoe", "taycan",
-        "bz4x", "ex30", "ex40", "ev3", "ev4", "ev5",
-        "ev6", "ev9", "mg4", "atto", "seal", "dolphin"
-    ],
+BRAND_ALIASES_2 = {
+    "mercedes-benz": {
+        "mercedes",
+        "mercedes-benz",
+        "мерцедес",
+        "мерцедес-бенц",
+        "мерцедес бенц",
+        "mеrcedes-benz",
+        "mercdes-benz",
+        "mercedes-maybach",
+        "maybach",
+    },
 
-    "diesel": [
-        "tdi",      # VW Group
-        "hdi",      # PSA
-        "bluehdi",  # PSA
-        "dci",      # Renault/Nissan
-        "cdi",      # Mercedes
-        "crdi",     # Hyundai/Kia
-        "mjet", "multijet", "jtm",  # Fiat/Alfa
-        "d4d",      # Toyota
-        "ddis",     # Suzuki
-        "td", "tddi",
-        "tdci",     # Ford
-        "sdi",
-        "d",
-        "xdrive20d",
-        "xdrive30d",
-        "sdrive18d",
-        "20d",
-        "25d",
-        "30d",
-        "35d",
-        "40d",
-        "50d",
-        "220d",
-        "320d",
-        "520d"
-    ],
+    "renault": {
+        "renault",
+        "рено",
+        "renaul",
+        "renaut",
+        "ренo",
+    },
 
-    "petrol": [
-        "tsi",
-        "tfsi",
-        "fsi",
-        "mpi",
-        "gdi",
-        "tgdi",
-        "ecoboost",
-        "ecotec",
-        "skyactiv-g",
-        "vti",
-        "puretech",
-        "tce",
-        "tsi evo",
-        "turbo",
-        "v6",
-        "v8",
-        "v10",
-        "v12"
-    ],
+    "dacia": {
+        "dacia",
+        "дачия",
+        "daciа",
+    },
 
-    "hybrid": [
-        "hev",
-        "hybrid",
-        "phev",
-        "plug-in",
-        "plugin",
-        "e-hybrid",
-        "gte",
-        "etech",
-        "e-tech",
-        "iprime",
-        "prime",
-        "4xe",
-        "xdrive30e",
-        "330e",
-        "530e",
-        "e-power",
-        "full hybrid",
-        "mhev",
-        "mild hybrid"
-    ]
+    "toyota": {
+        "toyota",
+        "тойота",
+        "toyotа",
+        "тoyota",
+    },
+
+    "kia": {
+        "kia",
+        "киа",
+        "кia",
+        "кiа",
+    },
+
+    "hyundai": {
+        "hyundai",
+        "хюндай",
+        "hyunday",
+        "huyndai",
+        "хюндаи",
+    },
+
+    "peugeot": {
+        "peugeot",
+        "пежо",
+        "реugeot",
+        "пeжо",
+    },
+
+    "citroen": {
+        "citroen",
+        "ситроен",
+    },
+
+    "volkswagen": {
+        "volkswagen",
+        "vw",
+        "фолксваген",
+        "vokswagen",
+        "volkwagen",
+        "volswagen",
+    },
+
+    "skoda": {
+        "skoda",
+        "skoda",
+        "шкода",
+        "scoda",
+    },
+
+    "bmw": {
+        "bmw",
+        "бмв",
+    },
+
+    "audi": {
+        "audi",
+        "аudi",
+    },
+
+    "mazda": {
+        "mazda",
+        "мазда",
+        "mаzda",
+    },
+
+    "nissan": {
+        "nissan",
+        "нисан",
+        "nisssan",
+    },
+
+    "opel": {
+        "opel",
+        "опел",
+    },
+
+    "suzuki": {
+        "suzuki",
+        "сузуки",
+    },
+
+    "ford": {
+        "ford",
+        "форд",
+    },
+
+    "honda": {
+        "honda",
+        "хонда",
+    },
+
+    "volvo": {
+        "volvo",
+        "волво",
+    },
+
+    "lexus": {
+        "lexus",
+        "лексус",
+    },
+
+    "porsche": {
+        "porsche",
+        "порше",
+        "porshe",
+    },
+
+    "fiat": {
+        "fiat",
+        "фиат",
+    },
+
+    "geely": {
+        "geely",
+        "джийли",
+    },
+
+    "byd": {
+        "byd",
+    },
+
+    "dongfeng": {
+        "dongfeng",
+        "донгфенг",
+        "donfeng",
+        "dongeng",
+        "dongfenh",
+    },
+
+    "haval": {
+        "haval",
+        "хавал",
+    },
+
+    "mg": {
+        "mg",
+    },
+
+    "tesla": {
+        "tesla",
+        "тесла",
+    },
+
+    "subaru": {
+        "subaru",
+        "субару",
+    },
+
+    "mitsubishi": {
+        "mitsubishi",
+    },
+
+    "jeep": {
+        "jeep",
+    },
+
+    "land rover": {
+        "rover",
+        "land rover",
+        "range rover",
+    },
+
+    "mini": {
+        "mini",
+    },
+
+    "cupra": {
+        "cupra",
+    },
+
+    "seat": {
+        "seat",
+        "сеат",
+    },
+
+    "lynk & co": {
+        "lynk&co",
+        "lynk",
+        "lync&co",
+    },
+
+    "smart": {
+        "smart",
+    },
 }
 
-
-
-ENGINE_PATTERN = re.compile(
-    r"\b\d(?:\.\d)?\s*(?:"
-    r"tdi|tdci|tddi|hdi|bluehdi|dci|cdi|crdi|"
-    r"d-4d|d4d|ddi|ddis|multijet|mjet|jtd|jtdm|"
-    r"tsi|tfsi|fsi|gdi|tgdi|mpi|"
-    r"ecoboost|ecotec|puretech|tce|"
-    r"skyactiv-d|skyactiv-g"
-    r")\b",
-    re.IGNORECASE,
-)
-
-
-
-
-DIESEL = {
-    "tdi", "tdci", "tddi",
-    "hdi", "bluehdi",
-    "dci",
-    "cdi",
-    "crdi",
-    "d4d", "d-4d",
-    "ddi", "ddis",
-    "jtd", "jtdm",
-    "multijet", "mjet",
-    "skyactiv-d",
-}
-
-PETROL = {
-    "tsi", "tfsi", "fsi",
-    "mpi",
-    "gdi", "tgdi",
-    "ecoboost",
-    "ecotec",
-    "puretech",
-    "tce",
-    "skyactiv-g",
-}
-
-
-BADGE_PATTERN = re.compile(
-    r"\b("
-    r"tdi|tdci|tddi|"
-    r"hdi|bluehdi|"
-    r"dci|"
-    r"cdi|"
-    r"crdi|"
-    r"d-4d|d4d|"
-    r"ddi|ddis|"
-    r"jtdm?|"
-    r"multijet|mjet|"
-    r"tsi|tfsi|fsi|"
-    r"gdi|tgdi|mpi|"
-    r"ecoboost|ecotec|"
-    r"puretech|tce|"
-    r"skyactiv-d|skyactiv-g"
-    
-    r")\b",
-    re.I
-)
-
-
-
-VEHICLE_WEIGHT_CLASSES = {
-    "motorcycle": (50, 500),
-    "car": (800, 2500),
-    "large_car_suv": (1500, 3500),
-    "lcv": (1800, 4500),          # vans, pickups, light commercial
-    "medium_duty": (3500, 12000), # trucks, box trucks, small rigids
-    "heavy_duty": (12000, 40000),  # heavy trucks, articulated tractors
-    "extra_heavy": (40000, 90000)  # special trucks, dumpers, etc.
-}
-
-
-EV_MODELS = [
-    # tesla
-    "model 3",
-    "model y",
-    "model s",
-    "model x",
-    "cybertruck",
-    "semi",
-    "roadster",
-
-    # volkswagen group
-    "id.3",
-    "id.4",
-    "id.5",
-    "id.7",
-    "id. buzz",
-    "e-golf",
-    "e-up",
-
-    # audi
-    "e-tron",
-    "q4 e-tron",
-    "q6 e-tron",
-    "q8 e-tron",
-    "e-tron gt",
-
-    # bmw
-    "i3",
-    "i4",
-    "i5",
-    "i7",
-    "ix",
-    "ix1",
-    "ix2",
-    "ix3",
-
-    # mercedes-benz
-    "eqb",
-    "eqc",
-    "eqe",
-    "eqs",
-    "eqe suv",
-    "eqs suv",
-    "eqa",
-
-    # hyundai
-    "ioniq 5",
-    "ioniq 6",
-    "kona electric",
-    "inster",
-
-    # kia
-    "ev3",
-    "ev4",
-    "ev5",
-    "ev6",
-    "ev9",
-    "niro ev",
-
-    # peugeot
-    "e-208",
-    "e-2008",
-    "e-308",
-    "e-3008",
-    "e-5008",
-
-    # renault
-    "zoe",
-    "megane e-tech",
-    "scenic e-tech",
-    "renault 5 e-tech",
-
-    # opel
-    "corsa-e",
-    "astra-e",
-    "mokka-e",
-
-    # citroen
-    "e-c4",
-    "e-c4 x",
-    "e-c3",
-
-    # skoda
-    "enyaq",
-    "elroq",
-
-    # volvo
-    "ex30",
-    "ex40",
-    "ex90",
-    "ec40",
-
-    # polestar
-    "polestar 2",
-    "polestar 3",
-    "polestar 4",
-
-    # ford
-    "mustang mach-e",
-    "f-150 lightning",
-
-    # nissan
-    "leaf",
-    "ariya",
-
-    # mg
-    "mg4",
-    "mg zs ev",
-
-    # byd
-    "atto 3",
-    "seal",
-    "dolphin",
-    "seagull",
-
-    # xpeng
-    "g6",
-    "g9",
-    "p7",
-
-    # zeekr
-    "001",
-    "x",
-    "009",
-    # rivian
-    "r1t",
-    "r1s",
-
-    # lucid
-    "air"
-]
-
-
-EV_KEYWORDS = [
-    # generic
-    "ev", "electric", "bev", "battery electric",
-    # bulgarian
-    "електрически", "електромобил", "електро",
-    # tesla
-    "tesla", "model 3", "model y", "model s", "model x", "cybertruck",
-    # vw group
-    "id.3", "id.4", "id.5", "id.7", "id buzz", "id. buzz",
-    "e-golf", "e up", "e-up",
-    # audi
-    "e-tron", "etron", "q4 e-tron", "q6 e-tron", "q8 e-tron",
-    # bmw
-    "i3", "i4", "i5", "i7", "ix", "ix1", "ix2", "ix3",
-    # mercedes
-    "eqb", "eqc", "eqe", "eqs", "eqa",
-    # hyundai/kia
-    "ioniq 5", "ioniq 6", "kona electric", "ev6", "ev9",
-    "niro ev",
-    # renault
-    "zoe", "megane e-tech", "scenic e-tech", "renault 5 e-tech",
-    # peugeot/citroen/opel
-    "e-208", "e-2008", "e-308", "e-3008",
-    "e-c4", "e-c4 x",
-    "corsa-e", "astra-e",
-    # skoda
-    "enyaq", "elroq",
-    # ford
-    "mustang mach-e", "mach e", "f-150 lightning",
-    # nissan
-    "leaf", "ariya",
-    # others
-    "mg4", "mg zs ev", "byd", "seal", "atto 3", "dolphin",
-    "xpeng", "zeekr", "rivian", "lucid"
-]
-HYBRID_KEYWORDS = [
-    # generic
-    "hybrid", "full hybrid", "mild hybrid",
-    "phev", "plug-in", "plugin hybrid",
-
-    # bulgarian
-    "хибрид", "пълен хибрид", "мек хибрид", "плъгин хибрид",
-
-    # toyota systems (VERY important)
-    "hsd", "hybrid synergy drive", "ths", "toyota hybrid",
-
-    # vw group
-    "gte", "tsi hybrid",
-
-    # mercedes
-    "eq boost", "eq-boost", "eq power",
-
-    # bmw
-    "xdrive hybrid", "active hybrid",
-
-    # renault
-    "e-tech hybrid", "e tech",
-
-    # stellantis
-    "4xe", "hybrid4", "e-hybrid", "plug-in hybrid",
-
-    # hyundai/kia
-    "tmhev", "hev", "k-hybrid",
-
-    # honda
-    "i-mmd", "immd", "ehev",
-
-    # ford
-    "ecoboost hybrid", "mhev"
-]
-DIESEL_KEYWORDS = [
-    # generic
-    "diesel", "diesel engine",
-
-    # bulgarian
-    "дизел", "дизелов",
-
-    # vw group
-    "tdi", "sd i", "sd- i",
-
-    # ford
-    "tdci", "tddi",
-
-    # psa
-    "hdi", "bluehdi",
-
-    # renault
-    "dci",
-
-    # mercedes
-    "cdi", "bluetec",
-
-    # fiat/alfa
-    "jtd", "multijet", "mjet",
-
-    # toyota
-    "d-4d", "d4d",
-
-    # kia/hyundai
-    "crdi", "crdi diesel", "u2 crdi",
-
-    # bmw
-    "d", "xdrive d",
-
-    # mazda
-    "skyactiv-d",
-
-    # opel
-    "cdti"
-]
-
-PETROL_KEYWORDS = [
-    # generic
-    "petrol", "gasoline", "benzine",
-
-    # bulgarian
-    "бензин", "бензинов",
-
-    # vw group
-    "tsi", "tfsi", "fsi", "mpi",
-
-    # ford
-    "ecoboost",
-
-    # psa
-    "vti", "puretech",
-
-    # renault
-    "tce",
-
-    # hyundai/kia
-    "gdi", "tgdi", "mpi",
-
-    # toyota
-    "vvt i", "vvti", "dual vvt i",
-
-    # mazda
-    "skyactiv-g",
-
-    # honda
-    "vtec", "ivtec",
-
-    # fiat
-    "fire",
-
-    # bmw
-    "i",  # (careful, weak signal but sometimes used)
-
-    # mercedes
-    "cgi", "kompressor"
-]
-
-FUEL_SIGNALS = {
-    "electric": EV_KEYWORDS,
-    "hybrid": HYBRID_KEYWORDS,
-    "diesel": DIESEL_KEYWORDS,
-    "petrol": PETROL_KEYWORDS
-}
-
-MOTORCYCLE = []
-Car = []
-LCV = []
-MEDIUM_DUTY_VEHICLES = []
-HEAVY_DUTY_VEHICLES = []
+SORTED_BRAND_LOOKUP = sorted(
+        BRAND_ALIASES_2.items(),
+        key=lambda x: len(x[0]),
+        reverse=True
+    )

@@ -1,6 +1,4 @@
 
-
-
 def weight_normalization(weight, unit):
     if weight in [None, "", "-"]:
         return None
