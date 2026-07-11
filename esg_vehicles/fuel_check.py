@@ -1,6 +1,7 @@
-from esg_vehicles.data_collections.data_id import FUEL_SIGNALS
-
-from esg_vehicles.data_collections.brand_models import TECHNOLOGY_FUEL_MAP, HYBRID_KWORDS, BEV_MODELS, HYBRID_MODELS, DIESEL_MODELS
+from esg_vehicles.data_collections.data_id2 import ELECTRIC_VINS
+from esg_vehicles.data_collections.fuel_propulsion import HYBRID_KWORDS, TECHNOLOGY_FUEL_MAP, BEV_MODELS, HYBRID_MODELS, \
+    DIESEL_MODELS, FUEL_SIGNALS, ELECTRIC_KEYWORDS, ELECTRIC_CODES, ELECTRIC_BRANDS, PETROL_KEYWORDS, GAS_KEYWORDS, \
+    DIESEL_KEYWORDS, HYBRID_KEYWORDS
 
 
 def normalize(text):
