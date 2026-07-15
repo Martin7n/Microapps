@@ -1,7 +1,7 @@
 from esg_vehicles.data_collections.data_id2 import LCV_VIN, HGV_VIN, CAR_VIN, MEDDUTYTRUCK
 from esg_vehicles.data_collections.categories_vehicles import CATEGORIES_BY_SOURCE, MAIN_CATEGORIES, \
     VEHICLE_WEIGHT_CLASSES
-from esg_vehicles.processors.data_helpers import text_normalization
+from esg_vehicles.processors.data_helpers import text_normalization, keyword_extract_list
 
 from esg_vehicles.models.main_class import ESGRecord
 from esg_vehicles.processors.weight_check import weight_normalization
@@ -12,11 +12,22 @@ from esg_vehicles.processors.weight_check import weight_normalization
 def category_handler(record: ESGRecord):
     eq_type = record.equipment_type
     eq_vin = record.vin
-    eq_description = record.equipment
+    eq_description = text_normalization(record.equipment)
     eq_weight = record.weight
     eq_weight_measure = record.weight_measure
 
+    updated_weight = weight_normalization(eq_weight, eq_weight_measure)
+    updated_measure = "kg"
+
+
+    category_by_type =  category_check_by_type_search(eq_type)
+    # FIXME Dict for update: category_by_type = category_check_by_type_id_match(eq_type)
+    category_by_description =  category_check_by_type_search(eq_description)
+    category_by_weight_class = classify_by_weight(updated_weight)
+    category_by_vin = check_by_partial_vin(eq_vin)
+
     #FIXME - eq_type column is currently off.
+
 
     ''''
     
@@ -27,12 +38,12 @@ def category_handler(record: ESGRecord):
         *** bonus: brand origin / country
         Result: B&M + modification data & id "tokens"
     B) Types/Categories: 
-        1. extract labeled category by equipment type(EqAlloc) *** partial match of types.
-        2. extract keyword category by description field (kw extract)
-        3. if exist: extract weight and measuring units && normalize it.
-        4. extract similarities based on VIN and mark/model
+        [x]1. extract labeled category by equipment type(EqAlloc) *** partial match of types.
+        [x]2. extract keyword category by description field (kw extract)
+        [x]3. if exist: extract weight and measuring units && normalize it.
+        [x]4. extract similarities based on VIN and mark/model
         Result:
-        [best case: 1 & 1 steps results combined with 3rd block are final ] 
+        [best case: B1 & A1 steps results combined with 3rd block are final ] 
         Fail-safe: 1st step results into Category, buildup with 4th block results.   
     
     C) Fuels-Propulsion (FP)
@@ -61,13 +72,13 @@ def category_handler(record: ESGRecord):
         - APC TWG 
     '''
 
-    check_by_exact_type = ""
-    if eq_type is not None or eq_type!="-":
-        check_by_exact_type = category_check_by_type_id_match(eq_type)
-    if eq_weight is not None or eq_weight!="-":
-        weight = weight_normalization(eq_weight, eq_weight_measure)
-        record.weight_measure_update = "kg"
-        record.detected_weight = weight
+    # check_by_exact_type = ""
+    # if eq_type is not None or eq_type!="-":
+    #     check_by_exact_type = category_check_by_type_id_match(eq_type)
+    # if eq_weight is not None or eq_weight!="-":
+    #     weight = weight_normalization(eq_weight, eq_weight_measure)
+    #     record.weight_measure_update = "kg"
+    #     record.detected_weight = weight
 
 
 
@@ -94,13 +105,13 @@ def classify_by_weight(weight):
 
     # weight = weight_normalization(weight, measure_unit)
     if weight is None:
-        return "unknown"
+        return "-"
 
     for category, (low, high) in VEHICLE_WEIGHT_CLASSES.items():
         if low <= weight <= high:
             return category
 
-    return "unknown"
+    return "-"
 
 
 #3rd stage
@@ -122,10 +133,9 @@ def check_by_partial_vin(safe_vin):
         return "MedDutyTruk"
     return "NoCat"
 
-def check_by_category(text, safe_vin, measure, weight, vehicle_type):
+def check_by_category(text, vehicle_type):
     category_text = text.split(" ")
     category_text = [x.lower() for x in category_text]
-    vin_partial = safe_vin[:7]
     if "Motorcycle" in vehicle_type:
         return "Motorcycle"
     if "trailer" in vehicle_type.lower():
