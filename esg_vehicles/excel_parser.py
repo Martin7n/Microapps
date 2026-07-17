@@ -4,8 +4,8 @@ import openpyxl
 from openpyxl.reader.excel import load_workbook
 from openpyxl.workbook import Workbook
 
-from esg_vehicles.brand_model import brands_t
 from esg_vehicles.data_collections.headers_fields import HEADER_MAP, OUTPUT_FIELDS
+from esg_vehicles.processors.brand_model import brands_t
 from esg_vehicles.processors.data_helpers import prepare_excel_value
 from esg_vehicles.models.main_class import ESGRecord
 from esg_vehicles.main_esg_data_update import object_data_update

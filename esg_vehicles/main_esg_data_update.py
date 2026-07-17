@@ -1,4 +1,4 @@
-from esg_vehicles.brand_model import brand_model_extraction, extract_brand, model_ext
+from esg_vehicles.processors.brand_model import brand_model_extraction, extract_brand, model_ext
 from esg_vehicles.processors.category_check import classify_by_weight
 from esg_vehicles.fuel_check import  classify_fuel
 from esg_vehicles.processors.weight_check import weight_normalization

@@ -122,16 +122,16 @@ def category_check_3rd_stage():
 
 
 def check_by_partial_vin(safe_vin):
-    vin_partial = safe_vin[:7]
-    if vin_partial in LCV_VIN:
-        return "LgtComrclVeh"
-    if vin_partial in HGV_VIN:
-        return "HvyDutyTruk"
-    if vin_partial in CAR_VIN:
-        return "Car"
-    if vin_partial in MEDDUTYTRUCK:
-        return "MedDutyTruk"
-    return "NoCat"
+    # vin_partial = safe_vin[:7]
+    # if vin_partial in LCV_VIN:
+    #     return "LgtComrclVeh"
+    # if vin_partial in HGV_VIN:
+    #     return "HvyDutyTruk"
+    # if vin_partial in CAR_VIN:
+    #     return "Car"
+    # if vin_partial in MEDDUTYTRUCK:
+    #     return "MedDutyTruk"
+    return ""
 
 def check_by_category(text, vehicle_type):
     category_text = text.split(" ")
