@@ -19,8 +19,11 @@ def process_records(records:[ESGRecord], type_processing):
 
             description_brand_model = [record.equipment, record.brand, record.model]
             [new_brand, new_model] = brand_model(description_brand_model)
+
             if new_brand:
                 record.detected_manufacturer = new_brand
+            if new_model:
+                record.detected_model = new_model
 
             current_fuel_equipment = [record.fuel_type, record.equipment]
             updated_fuel_cat = check_for_fuel_rev(current_fuel_equipment)

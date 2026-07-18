@@ -1,9 +1,9 @@
-''''
+"""
 1. exact model match
 2. brand + technology
 3. technology alone
-4. generic fuel keyword
-'''
+4. generic fuel keyword"""
+
 
 
 BRAND_ALIASES = {
@@ -90,7 +90,7 @@ BRAND_ALIASES = {
 
     "wey": ["wey", "уей", "вей", "way"],
     "baik": ["baik", "баик", "байк", "байц"],
-    "voyah": ["voyah", "войах", "войа", "воя", "воиуах"],
+    "voyah": ["voyah", "войах", "войа", "воя", "воиуах", "воиах", "воях"],
     "foton": ["foton", "фотон"],
     "shacman": ["shacman", "shaanxi"],
     "sinotruk": ["sinotruk", "howo"],
@@ -148,7 +148,27 @@ BRAND_ALIASES = {
     "feldbinder": ["feldbinder", "фелдбиндер"],
     "komatsu": ["komatsu", "комацу"],
     "liebherr": ["liebherr", "либхер"],
-    "caterpillar": ["caterpillar", "катърпилър", "катърпилър", "катърпилар", "катърпилер"]
+    "caterpillar": ["caterpillar", "катърпилър", "катърпилър", "катърпилар", "катърпилер"],
+    "smart": ["smart", "смарт"],
+    "faun": ["faun", "фаун"],
+    "otokar": ["otokar", "отокар"],
+    "cenntro": ["cenntro", "центро"],
+    "zoomlion": ["zoomlion", "зумлион"],
+    "chevrolet": ["chevrolet", "шевроле"],
+    "eura mobil": ["eura", "еура", "еура мобил"],
+    "carthago": ["carthago", "картаго"],
+    "tenax": ["tenax", "тенакс"],
+    "hymer": ["hymer", "химер"],
+    "ppm": ["ppm", "ппм"],
+    "ktm": ["ktm", "ктм"],
+    "astra": ["astra", "астра"],
+    "ora": ["ora", "ора"],
+    "paragan": ["paragan", "параган"],
+    "atlas": ["atlas", "атлас"],
+    "officine cucini porter": ["officine cucini porter", "офисине кучини портер", "кучини"],
+    "kubota": ["kubota", "кубота"]
+
+
 }
 
 
