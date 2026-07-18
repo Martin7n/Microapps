@@ -1,7 +1,9 @@
 from esg_vehicles.data_collections.data_id2 import ELECTRIC_VINS
-from esg_vehicles.data_collections.fuel_propulsion import HYBRID_KWORDS, TECHNOLOGY_FUEL_MAP, BEV_MODELS, HYBRID_MODELS, \
-    DIESEL_MODELS, FUEL_SIGNALS, ELECTRIC_KEYWORDS, ELECTRIC_CODES, ELECTRIC_BRANDS, PETROL_KEYWORDS, GAS_KEYWORDS, \
+from esg_vehicles.data_collections.fuels_propulsions.ev import ELECTRIC_KEYWORDS
+from esg_vehicles.data_collections.fuels_propulsions.fuel_propulsion import HYBRID_KWORDS, TECHNOLOGY_FUEL_MAP, BEV_MODELS, HYBRID_MODELS, \
+    FUEL_SIGNALS,  PETROL_KEYWORDS, GAS_KEYWORDS, \
     DIESEL_KEYWORDS, HYBRID_KEYWORDS
+from esg_vehicles.processors.data_helpers import keywords_list_exraction_desc
 
 
 def normalize(text):
@@ -23,7 +25,7 @@ def detect_fuel(model_name):
     if any(x in model for x in HYBRID_MODELS):
         return "hybrid"
 
-    if any(x in model for x in DIESEL_MODELS):
+    if any(x in model for x in DIESEL_KEYWORDS):
         return "diesel"
 
     return None
@@ -75,18 +77,10 @@ def classify_fuel(text):
 
 
 
-def check_for_fuel(text):
-    category_text = text.replace("  ", " ").split(" ")
-    category_text = [x.lower() for x in category_text]
-    # print(category_text)
-    for x in category_text:
-        if x == "t-gdi":
-            print("111")
-            break
-        word = x.strip()
-        # print(word)
+def check_for_fuel(check_for_fuel:list):
+    normalized_text = keywords_list_exraction_desc(check_for_fuel)
 
-
+    for word in normalized_text:
         if word in PETROL_KEYWORDS:
             return "petrol"
         if word in HYBRID_KEYWORDS:
@@ -96,25 +90,49 @@ def check_for_fuel(text):
         if word in GAS_KEYWORDS:
             return "gas/alternative"
 
-        if word in ELECTRIC_VINS:
-            return "EV"
-        if word in ELECTRIC_KEYWORDS:
-            print(f"KW {word, text}")
+        # if word in ELECTRIC_VINS:
+        #     return "EV"
+        # if word in ELECTRIC_KEYWORDS:
+        #     return  "EV"
+        # if word in ELECTRIC_CODES:
+        #     return "EV"
+        # if word in ELECTRIC_BRANDS:
 
-            return  "EV"
-        if word in ELECTRIC_CODES:
-            print(f"CODES {word, text}")
-            return "EV"
-        if word in ELECTRIC_BRANDS:
-            print(f"brands {word, text}")
+            # return "EV"
 
-            return "EV"
-
-    return f"no fuel ide {text}"
+    return f"no fuel ide"
 
 
+def check_for_fuel_rev(check_for_fuel:list):
+    normalized_text = keywords_list_exraction_desc(check_for_fuel)
+    full_text_string = " " + " ".join(normalized_text) + " "
+
+    if any(f" {keyword} " in full_text_string for keyword in ELECTRIC_KEYWORDS):
+        return "ev"
+    if any(f" {keyword} " in full_text_string for keyword in HYBRID_KEYWORDS):
+        return "hybrid"
+    if any(f" {keyword} " in full_text_string for keyword in PETROL_KEYWORDS):
+        return "petrol"
+    if any(f" {keyword} " in full_text_string for keyword in DIESEL_KEYWORDS):
+        return "diesel"
 
 
+        #
+        #
+        # if word in GAS_KEYWORDS:
+        #     return "gas/alternative"
+        #
+        # if word in ELECTRIC_VINS:
+        #     return "EV"
+        # if word in ELECTRIC_KEYWORDS:
+        #     return  "EV"
+        # if word in ELECTRIC_CODES:
+        #     return "EV"
+        # if word in ELECTRIC_BRANDS:
+        #
+        #     return "EV"
+
+    return f"no fuel ide"
 
 
 

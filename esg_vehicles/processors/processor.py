@@ -2,7 +2,7 @@ from esg_vehicles.models.main_class import ESGRecord
 from esg_vehicles.processors.brand_extraction import test1
 from esg_vehicles.processors.brand_model import extract_brand, extract_model, brand_model
 from esg_vehicles.processors.category_check import  category_handler
-from esg_vehicles.processors.fuel_check import check_for_fuel
+from esg_vehicles.processors.fuel_check import check_for_fuel, check_for_fuel_rev
 
 
 def process_records(records:[ESGRecord], type_processing):
@@ -18,7 +18,8 @@ def process_records(records:[ESGRecord], type_processing):
             [new_brand, new_model] = brand_model(description_brand_model)
             if new_brand:
                 record.detected_manufacturer = new_brand
-            updated_fuel_cat = check_for_fuel(record.equipment)
+            current_fuel_equipment = ["record.fuel_type", record.equipment]
+            updated_fuel_cat = check_for_fuel_rev(current_fuel_equipment)
             record.detected_fuel = updated_fuel_cat
 
     else:
