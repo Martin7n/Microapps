@@ -11,7 +11,7 @@ def keyword_extract_list(text_list:list):
 
 def keywords_list_exraction_desc(text_list:list):
     raw_joined = " ".join(text_list)
-    cleaned_text = re.sub(r'[,./()]', ' ', raw_joined)
+    cleaned_text = re.sub(r'[,/()]', ' ', raw_joined)
     combined_text = cleaned_text.split()
 
     # combined_text = (" ".join(text_list)

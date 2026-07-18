@@ -116,7 +116,6 @@ def check_for_fuel_rev(check_for_fuel:list):
     if any(f" {keyword} " in full_text_string for keyword in DIESEL_KEYWORDS):
         return "diesel"
 
-
         #
         #
         # if word in GAS_KEYWORDS:

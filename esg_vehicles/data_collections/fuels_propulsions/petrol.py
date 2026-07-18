@@ -32,6 +32,8 @@ PETROL_KEYWORDS = {
     '4g15', '4g15t',  # Universal Mitsubishi-derived petrol engines used by DFSK/Great Wall
 
     # 6. Specific Fuel / Gas Platform Combinations
-    'petrol/gas', 'eco-g', 'bi-fuel benzine', 'tsi evo',
+    'petrol/gas', 'eco-g', 'bi-fuel benzine', 'tsi evo', "донгфенг аелус шайн",
+    "донгфенг глори", "донгфенг с7", "geely cityray 1.5"
+
 }
 

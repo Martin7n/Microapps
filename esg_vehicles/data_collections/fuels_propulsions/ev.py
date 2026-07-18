@@ -47,8 +47,9 @@ ELECTRIC_KEYWORDS = {
     "e-tech iconic ev60",
     "kangoo van e-tech", "trafic van e-tech", "kangoo e-tech", "kangoo e tech","trafic e-tech",
     "master van e-tech", "master e-tech", "master e tech", "ford e transit",
-    "e nv 200"
-
+    "e nv 200", "e custom", "e transit custom", "e-transit", "e-transit custom",
+    "renault 5", "evitara", "евитара", "e-vitara", "е-витара", "forthing s7",
+    "фортинг с7", "nammi box", "нами бокс"
 }
 
 

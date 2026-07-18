@@ -9,6 +9,9 @@ def process_records(records:[ESGRecord], type_processing):
     if type_processing == "esg_main":
         # test1(records)
         count = 0
+
+        data_ex = {}
+
         for record in records:
 
             record.detected_weight = category_handler(record)
@@ -18,7 +21,8 @@ def process_records(records:[ESGRecord], type_processing):
             [new_brand, new_model] = brand_model(description_brand_model)
             if new_brand:
                 record.detected_manufacturer = new_brand
-            current_fuel_equipment = ["record.fuel_type", record.equipment]
+
+            current_fuel_equipment = [record.fuel_type, record.equipment]
             updated_fuel_cat = check_for_fuel_rev(current_fuel_equipment)
             record.detected_fuel = updated_fuel_cat
 
