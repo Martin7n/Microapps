@@ -117,7 +117,6 @@ BRAND_ALIASES = {
     "zeekr": ["zeekr", "зийкър", "зиикр", "зеекр", "зикр"],
 
     "land rover": [
-        "rover",
         "land rover",
         "range rover",
         "ланд ровър",

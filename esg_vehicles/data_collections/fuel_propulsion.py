@@ -264,6 +264,7 @@ DIESEL_KWORDS = {
         "diesel",
         "disel",
         "dsl",
+        "tdci"
         "diesel engine",
         "diesel/electric",
 
@@ -823,6 +824,8 @@ TECHNOLOGY_FUEL_MAP = {
         "dm-i": "phev",
         "dm-p": "phev",
         "super dm": "phev",
+        "blade battery": "electric",
+        "e-platform": "electric",
     },
 
     "Lynk & Co": {
@@ -832,22 +835,8 @@ TECHNOLOGY_FUEL_MAP = {
     "Audi": {
         "tfsie": "phev",
         "tfsi e": "phev",
-    },
+        "e-tron": "electric",
 
-    "Volkswagen": {
-        "gte": "phev",
-    },
-
-    "Mercedes-Benz": {
-        "eq power": "phev",
-    },
-
-    "BMW": {
-        "330e": "phev",
-        "530e": "phev",
-        "545e": "phev",
-        "745e": "phev",
-        "xdrive30e": "phev",
     },
 
     "Jeep": {
@@ -865,7 +854,6 @@ TECHNOLOGY_FUEL_MAP = {
     "DS": {
         "e-tense": "phev",
     },
-
 
     # =========================
     # HEV (full hybrid)
@@ -890,19 +878,13 @@ TECHNOLOGY_FUEL_MAP = {
         "e-tech": "hev",
     },
 
-    "Nissan": {
-        "e-power": "hev",
-        "epower": "hev",
-    },
-
     "Hyundai": {
         "hybrid blue drive": "hev",
         "smartstream hybrid": "hev",
+        "e-gmp": "electric",
+
     },
 
-    "Kia": {
-        "smartstream hybrid": "hev",
-    },
 
 
     # =========================
@@ -912,26 +894,33 @@ TECHNOLOGY_FUEL_MAP = {
     "Mercedes-Benz": {
         "eq boost": "mhev",
         "eq-boost": "mhev",
+        "eq power": "phev",
+        "eq": "electric",
+        "eqs": "electric",
+        "eqe": "electric",
+        "eqb": "electric",
+
     },
 
-    "Volkswagen Group": {
+    "Volkswagen": {
         "e-tsi": "mhev",
         "etsi": "mhev",
+        "gte": "phev",
+        "ecofuel": "cng",
+        "g-tec": "cng",
+        "tgi": "cng",
+        "id": "electric",
+        "id.3": "electric",
+        "id.4": "electric",
+        "id.5": "electric",
+        "id.7": "electric",
+
     },
 
-    "Ford": {
-        "ecoboost hybrid": "mhev",
-    },
-
-    "Mazda": {
-        "m hybrid": "mhev",
-        "m-hybrid": "mhev",
-    },
 
     "Suzuki": {
         "smart hybrid": "mhev",
     },
-
 
     # =========================
     # REEV / EREV
@@ -944,13 +933,14 @@ TECHNOLOGY_FUEL_MAP = {
     "Mazda": {
         "r-ev": "reev",
         "reev": "reev",
+        "m hybrid": "mhev",
+        "m-hybrid": "mhev",
     },
 
     "Leapmotor": {
         "reev": "reev",
         "erev": "reev",
     },
-
     "Li Auto": {
         "erev": "reev",
     },
@@ -959,50 +949,28 @@ TECHNOLOGY_FUEL_MAP = {
         "evr": "reev",
     },
 
-
     # =========================
     # BEV
     # =========================
-
-    "Audi": {
-        "e-tron": "electric",
-    },
-
-    "Volkswagen": {
-        "id": "electric",
-        "id.3": "electric",
-        "id.4": "electric",
-        "id.5": "electric",
-        "id.7": "electric",
-    },
-
     "BMW": {
         "edrive": "electric",   # ambiguous, check model
         "i": "electric",
-    },
-
-    "Mercedes-Benz": {
-        "eq": "electric",
-        "eqs": "electric",
-        "eqe": "electric",
-        "eqb": "electric",
-    },
-
-    "Hyundai": {
-        "e-gmp": "electric",
+        "330e": "phev",
+        "530e": "phev",
+        "545e": "phev",
+        "745e": "phev",
+        "xdrive30e": "phev",
     },
 
     "Kia": {
         "e-gmp": "electric",
+        "smartstream hybrid": "hev",
+
     },
 
     "Ford": {
         "mach-e": "electric",
-    },
-
-    "BYD": {
-        "blade battery": "electric",
-        "e-platform": "electric",
+        "ecoboost hybrid": "mhev",
     },
 
     "Zeekr": {
@@ -1013,7 +981,6 @@ TECHNOLOGY_FUEL_MAP = {
         "800v": "electric",
     },
 
-
     # =========================
     # LPG / CNG
     # =========================
@@ -1023,16 +990,11 @@ TECHNOLOGY_FUEL_MAP = {
         "eco g": "lpg",
     },
 
-    "Volkswagen": {
-        "ecofuel": "cng",
-        "g-tec": "cng",
-        "tgi": "cng",
-    },
-
     "Skoda": {
         "g-tec": "cng",
     },
 }
+
 
 
 
@@ -1058,7 +1020,7 @@ bev_models = {
         "seagull",
         "atto 3",
         "yuan plus ev",
-        "seal",
+        # "seal",
         "sealion 7",
         "han ev",
         "tang ev",
@@ -1412,22 +1374,41 @@ DIESEL_MODELS = {
     "skyactiv-d",
 }
 
-
-ELECTRIC_CODES  = ["ev", "bev", "eq", "i4", "i5", "ix", "id.4", "i3", "ix1", "ix2", "ix3","eqa", "eqb", "eqc", "eqe", "eqs", "eqv",  "enyaq", "elroq", "epiq", "taycan", "r1t", "r1s", "r2",
+# CLEANED 100% PURE BEV LIST (Removed high-risk hybrids & cleaned dupes)
+ELECTRIC_CODES  = ["ev", "bev", "i4", "i5", "ix", "id.4", "ix1", "ix2", "ix3", "enyaq", "elroq", "epiq", "taycan", "r1t", "r1s", "r2",
                    "model 3", "model y", "model s", "model x", "cybertruck",
                    "ioniq 5", "ioniq 6", "ioniq 9", "ev 3", "ev 4", "ev 5", "ev 6", "ev 9",
-                   "atto 3", "dolphin", "byd seal", "seal", "bydseal",
-                   "macanelectric", "enyaq", "elroq", "epiq", "peaq", "ex30", "ex90", "ex60", "es90", "c40",
-                   "atto3", "atto", "bydseal", "byd han", "byd tang", "tang", "dolphin", "sealion",
-                   "leapmotor", "t03", "c10", "zeekr", "zeekr001", "zeekrx", "xpeng", "g6", "g9", "p7", "nio", "el6",
-                   "et5", "et7", "zoe",
-                   #"omoda",
-                   #"e5",
-                   "changan", "skywell", "aion", "maxus", "eDeliver", "seres", "voyah", "free", "lucid",
-                   "rivian", "r1t", "r1s", "e-rifter"
+                   "atto 3", "dolphin", "atto3", "atto", "zoe", "t03",
+                   "eqa", "eqb", "eqc", "eqe", "eqs", "eqv", # Specific Mercedes BEV codes rather than a flat "eq"
+                   "macanelectric", "ex30", "ex90", "ex60", "es90", "c40",
+                   "byd han ev", "byd tang ev", "byd seal ev", # Enforced "ev" suffix to avoid capturing DM-i hybrids
+                   "sealion 7", # Excludes the hybrid Sealion 6
+                   "zeekr", "zeekr001", "zeekrx", "xpeng", "g6", "g9", "p7", "nio", "el6", "et5", "et7",
+                   "skywell", "aion", "maxus", "eDeliver", "seres", "lucid", "rivian", "e-rifter"
                    ]
 
-ELECTRIC_BRANDS = ["electric", "e-tron", "etron", "e-tech", "etech", "tesla", "ioniq", "bz4x",
+
+
+# ELECTRIC_CODES  = ["ev", "bev", "eq", "i4", "i5", "ix", "id.4", "i3", "ix1", "ix2", "ix3","eqa", "eqb", "eqc", "eqe", "eqs", "eqv",  "enyaq", "elroq", "epiq", "taycan", "r1t", "r1s", "r2",
+#                    "model 3", "model y", "model s", "model x", "cybertruck",
+#                    "ioniq 5", "ioniq 6", "ioniq 9", "ev 3", "ev 4", "ev 5", "ev 6", "ev 9",
+#                    "atto 3", "dolphin", "byd seal", "seal", "bydseal",
+#                    "macanelectric", "enyaq", "elroq", "epiq", "peaq", "ex30", "ex90", "ex60", "es90", "c40",
+#                    "atto3", "atto", "bydseal", "byd han", "byd tang", "tang", "dolphin", "sealion",
+#                    #"leapmotor",
+#                    "t03", "c10", "zeekr", "zeekr001", "zeekrx", "xpeng", "g6", "g9", "p7", "nio", "el6",
+#                    "et5", "et7", "zoe",
+#                    #"omoda",
+#                    #"e5",
+#                    "changan", "skywell", "aion", "maxus", "eDeliver", "seres",
+#                    #"voyah", "free",
+#                    "lucid",
+#                    "rivian", "r1t", "r1s", "e-rifter"
+#                    ]
+
+ELECTRIC_BRANDS = ["electric", "e-tron", "etron",
+                   #"e-tech", "etech",
+                   "tesla", "bz4x",
                    "aiways",  "fisker" , "ev2", "lucid motors", "nio" , "polaris" , "rimac" ,  "seres" , "tesla" , "xpeng", "jiayuan",
                    "elaris" , "e.go", "spring", "zoe",
                    "id.3", "id3", "id.4", "id4", "id.5", "id5", "id.6", "id6", "id.7", "id7",
@@ -1556,34 +1537,9 @@ PETROL = {
     "puretech",
     "tce",
     "skyactiv-g",
+    "t-gdi",
 }
 
-
-
-HYBRID_KEYWORDS = [
-    "fhev",
-    "(hev)"
-    "ch-r",
-    "цх-р"
-    "hybrid",
-    "reev",
-    "zr-v",
-    "hsd",
-    "hev",
-    "phev",
-    "mhev",
-    "бензин/електричество",
-    "бензин/електричество/внг",
-    "хибрид",
-    "petrol/electric",
-    "phev (plug-in)",
-    "erev",
-    "boost",
-    "e:hev",
-    "i-mmd",
-    "plug-in",
-    "дизел/електричество",
-]
 
 ELECTRIC_KEYWORDS = [
     "electric",
@@ -1595,11 +1551,11 @@ ELECTRIC_KEYWORDS = [
     "e-tron",
     "eq",
     "tesla",
-    "e-tech",
+    # "e-tech",
     "i4",
     "i5",
     "ix",
-    "ioniq",
+    # "ioniq",
     "bz4x",
     "eqs",
     "eqb",
@@ -1613,16 +1569,44 @@ DIESEL_KEYWORDS = [
     "scania",
     "tgx",
     "man",
+    "tdci",
     "cdi",
+    "tdi-cr",
     "dci",
     "hdi",
     "bluehdi",
     "d-4d",
     "tdi",
     "2.8d",
+# generic
+    "diesel", "diesel engine",
+    # bulgarian
+    "дизел", "дизелов",
+    # vw group
+    "tdi", "sd i", "sd- i",
+    # ford
+    "tdci", "tddi",
+    # psa
+    "hdi", "bluehdi",
+    # renault
+    "dci",
+    # mercedes
+    "cdi", "bluetec",
+    # fiat/alfa
+    "jtd", "multijet", "mjet",
+    # toyota
+    "d-4d", "d4d",
+    # kia/hyundai
+    "crdi", "crdi diesel", "u2 crdi",
+    # bmw
+    "d", "xdrive d",
+    # mazda
+    "skyactiv-d",
+    # opel
+    "cdti",
 ]
 
-PETROL_KEYWORDS1 = [
+PETROL_KEYWORDS = [
     "petrol",
     "sandero",
     "shine",
@@ -1638,6 +1622,92 @@ PETROL_KEYWORDS1 = [
     "бензин",
     "petrol/gas",
     "eco-g",
+    "t-gdi",
+# generic
+    "petrol", "gasoline", "benzine",
+    # bulgarian
+    "бензин", "бензинов",
+    # vw group
+    "tsi", "tfsi", "fsi", "mpi",
+    # ford
+    "ecoboost",
+    # psa
+    "vti", "puretech",
+    # renault
+    "tce",
+    # hyundai/kia
+    "gdi", "tgdi", "mpi",
+    # toyota
+    "vvt i", "vvti", "dual vvt i",
+    # mazda
+    "skyactiv-g",
+    # honda
+    "vtec", "ivtec",
+    # fiat
+    "fire",
+    # bmw
+    "i",  # (careful, weak signal but sometimes used)
+    # mercedes
+    "cgi", "kompressor",
+    "petrol",
+    "sandero",
+    "shine",
+    "шайн",
+    "ситирей",
+    "1,5t",
+    "gasolina",
+    "puretech",
+    "tgdi",
+    "tsi",
+    "tfsi",
+    "ecoboost",
+    "бензин",
+    "petrol/gas",
+    "eco-g",
+    "t-gdi",
+# generic
+    "petrol", "gasoline", "benzine",
+    # bulgarian
+    "бензин", "бензинов",
+    # vw group
+    "tsi", "tfsi", "fsi", "mpi",
+    # ford
+    "ecoboost",
+    # psa
+    "vti", "puretech",
+    # renault
+    "tce",
+    # hyundai/kia
+    "gdi", "tgdi", "mpi",
+    # toyota
+    "vvt i", "vvti", "dual vvt i",
+    # mazda
+    "skyactiv-g",
+    # honda
+    "vtec", "ivtec",
+    # fiat
+    "fire",
+    # bmw
+    "i",  # (careful, weak signal but sometimes used)
+    # mercedes
+    "cgi", "kompressor",
+    "petrol",
+    "sandero",
+    "shine",
+    "шайн",
+    "ситирей",
+    "1,5t",
+    "gasolina",
+    "puretech",
+    "tgdi",
+    "tsi",
+    "tfsi",
+    "ecoboost",
+    "бензин",
+    "petrol/gas",
+    "eco-g",
+    "t-gdi",
+
 ]
 
 GAS_KEYWORDS = [
@@ -1660,7 +1730,6 @@ EV_MODELS = [
     "cybertruck",
     "semi",
     "roadster",
-
     # volkswagen group
     "id.3",
     "id.4",
@@ -1669,14 +1738,12 @@ EV_MODELS = [
     "id. buzz",
     "e-golf",
     "e-up",
-
     # audi
     "e-tron",
     "q4 e-tron",
     "q6 e-tron",
     "q8 e-tron",
     "e-tron gt",
-
     # bmw
     "i3",
     "i4",
@@ -1686,7 +1753,6 @@ EV_MODELS = [
     "ix1",
     "ix2",
     "ix3",
-
     # mercedes-benz
     "eqb",
     "eqc",
@@ -1695,13 +1761,11 @@ EV_MODELS = [
     "eqe suv",
     "eqs suv",
     "eqa",
-
     # hyundai
     "ioniq 5",
     "ioniq 6",
     "kona electric",
     "inster",
-
     # kia
     "ev3",
     "ev4",
@@ -1709,25 +1773,21 @@ EV_MODELS = [
     "ev6",
     "ev9",
     "niro ev",
-
     # peugeot
     "e-208",
     "e-2008",
     "e-308",
     "e-3008",
     "e-5008",
-
     # renault
     "zoe",
     "megane e-tech",
     "scenic e-tech",
     "renault 5 e-tech",
-
     # opel
     "corsa-e",
     "astra-e",
     "mokka-e",
-
     # citroen
     "e-c4",
     "e-c4 x",
@@ -1742,35 +1802,28 @@ EV_MODELS = [
     "ex40",
     "ex90",
     "ec40",
-
     # polestar
     "polestar 2",
     "polestar 3",
     "polestar 4",
-
     # ford
     "mustang mach-e",
     "f-150 lightning",
-
     # nissan
     "leaf",
     "ariya",
-
     # mg
     "mg4",
     "mg zs ev",
-
     # byd
     "atto 3",
     "seal",
     "dolphin",
     "seagull",
-
     # xpeng
     "g6",
     "g9",
     "p7",
-
     # zeekr
     "001",
     "x",
@@ -1778,7 +1831,6 @@ EV_MODELS = [
     # rivian
     "r1t",
     "r1s",
-
     # lucid
     "air"
 ]
@@ -1817,124 +1869,141 @@ EV_KEYWORDS = [
     "leaf", "ariya",
     # others
     "mg4", "mg zs ev", "byd", "seal", "atto 3", "dolphin",
+    "xpeng", "zeekr", "rivian", "lucid",
+# generic
+    "ev", "electric", "bev", "battery electric",
+    # bulgarian
+    "електрически",
+    "електромобил",
+    "електро",
+    # tesla
+    "tesla", "model 3", "model y", "model s", "model x", "cybertruck",
+    # vw group
+    "id.3", "id.4", "id.5", "id.7", "id buzz", "id. buzz",
+    "e-golf", "e up", "e-up",
+
+    # audi
+    "e-tron", "etron", "q4 e-tron", "q6 e-tron", "q8 e-tron",
+    # bmw
+    "i3", "i4", "i5", "i7", "ix", "ix1", "ix2", "ix3",
+    # mercedes
+    "eqb", "eqc", "eqe", "eqs", "eqa",
+    # hyundai/kia
+    "ioniq 5", "ioniq 6", "kona electric", "ev6", "ev9",
+    "niro ev",
+    # renault
+    "zoe",
+    # "megane e-tech",
+    "scenic e-tech", "renault 5 e-tech",
+    # peugeot/citroen/opel
+    "e-208", "e-2008", "e-308", "e-3008",
+    "e-c4", "e-c4 x",
+    "corsa-e", "astra-e",
+    # skoda
+    "enyaq", "elroq",
+    # ford
+    "mustang mach-e", "mach e", "f-150 lightning",
+    # nissan
+    "leaf", "ariya",
+    # others
+    "mg4", "mg zs ev",
+    # "byd", "seal",
+    "atto 3", "dolphin",
     "xpeng", "zeekr", "rivian", "lucid"
 ]
+
 HYBRID_KEYWORDS = [
     # generic
     "hybrid", "full hybrid", "mild hybrid",
     "phev", "plug-in", "plugin hybrid",
-
+    "e-tense",
+    "fhev",
     # bulgarian
     "хибрид", "пълен хибрид", "мек хибрид", "плъгин хибрид",
-
     # toyota systems (VERY important)
     "hsd", "hybrid synergy drive", "ths", "toyota hybrid",
-
     # vw group
     "gte", "tsi hybrid",
-
     # mercedes
     "eq boost", "eq-boost", "eq power",
-
     # bmw
     "xdrive hybrid", "active hybrid",
-
     # renault
     "e-tech hybrid", "e tech",
-
     # stellantis
     "4xe", "hybrid4", "e-hybrid", "plug-in hybrid",
-
     # hyundai/kia
     "tmhev", "hev", "k-hybrid",
-
     # honda
     "i-mmd", "immd", "ehev",
-
+    # ford
+    "ecoboost hybrid", "mhev",
+    "hybrid", "full hybrid", "mild hybrid",
+    "phev", "plug-in", "plugin hybrid",
+    # bulgarian
+    "хибрид",
+    "пълен хибрид",
+    "мек хибрид",
+    "плъгин хибрид",
+    "плъг-ин хибрид",
+    "зареждащ се хибрид",
+    "хибриден",
+    "меко хибриден",
+    # toyota systems (VERY important)
+    "hsd", "hybrid synergy drive", "ths", "toyota hybrid",
+    # vw group
+    "gte", "tsi hybrid",
+    # mercedes
+    "eq boost", "eq-boost", "eq power",
+    # bmw
+    "xdrive hybrid", "active hybrid",
+    # renault
+    "e-tech hybrid", "e tech",
+    # stellantis
+    "4xe", "hybrid4", "e-hybrid", "plug-in hybrid",
+    # hyundai/kia
+    "tmhev", "hev", "k-hybrid",
+    # honda
+    "i-mmd", "immd", "ehev",
     # ford
     "ecoboost hybrid", "mhev"
-]
-DIESEL_KEYWORDS = [
-    # generic
-    "diesel", "diesel engine",
-
-    # bulgarian
-    "дизел", "дизелов",
-
-    # vw group
-    "tdi", "sd i", "sd- i",
-
-    # ford
-    "tdci", "tddi",
-
-    # psa
-    "hdi", "bluehdi",
-
-    # renault
-    "dci",
-
-    # mercedes
-    "cdi", "bluetec",
-
-    # fiat/alfa
-    "jtd", "multijet", "mjet",
-
-    # toyota
-    "d-4d", "d4d",
-
-    # kia/hyundai
-    "crdi", "crdi diesel", "u2 crdi",
-
-    # bmw
-    "d", "xdrive d",
-
-    # mazda
-    "skyactiv-d",
-
-    # opel
-    "cdti"
+# Official Acronyms & International Terms
+    "hybrid",
+    "hev",
+    "fhev",
+    "phev",
+    "mhev",
+    "reev",
+    "erev",
+    "plug-in",
+    "phev (plug-in)",
+    "(hev)",  # Retained with brackets if specifically looking for this tag format
+    # Bulgarian Platform Fuel Tags
+    "хибрид",
+    "бензин/електричество",
+    "бензин/електричество/внг",  # LPG/Hybrid conversions
+    "дизел/електричество",
+    "petrol/electric",
+    "eHybridDSG"
+    "e-TSI", "eHybridDSG",
+    # Manufacturer-Specific Hybrid Tech
+    "hsd",  # Toyota Hybrid Synergy Drive
+    "e:hev",  # Honda Hybrid Tech
+    "i-mmd",  # Honda Intelligent Multi-Mode Drive
+    "dm-i",  # BYD Intelligent Hybrid (Recommended addition)
+    "dm-p",  # BYD Performance Hybrid (Recommended addition)
+    "shs",  # Omoda Super Hybrid System (Recommended addition)
+    "ch-r",
+    "цх-р",
+    "(ch-r)"
+    "zr-v",
+    "rev 318",  # Voyah Range-Extender (Recommended addition)
+    # Specific Trim/Variant Rules
+    "seal 6 boost"  # Kept safe from generic "turbo boost" text pollution
 ]
 
-PETROL_KEYWORDS = [
-    # generic
-    "petrol", "gasoline", "benzine",
 
-    # bulgarian
-    "бензин", "бензинов",
 
-    # vw group
-    "tsi", "tfsi", "fsi", "mpi",
-
-    # ford
-    "ecoboost",
-
-    # psa
-    "vti", "puretech",
-
-    # renault
-    "tce",
-
-    # hyundai/kia
-    "gdi", "tgdi", "mpi",
-
-    # toyota
-    "vvt i", "vvti", "dual vvt i",
-
-    # mazda
-    "skyactiv-g",
-
-    # honda
-    "vtec", "ivtec",
-
-    # fiat
-    "fire",
-
-    # bmw
-    "i",  # (careful, weak signal but sometimes used)
-
-    # mercedes
-    "cgi", "kompressor"
-]
 
 BADGE_PATTERN = re.compile(
     r"\b("
@@ -1957,62 +2026,11 @@ BADGE_PATTERN = re.compile(
     re.I
 )
 
-EV_KEYWORDS = [
-    # generic
-    "ev", "electric", "bev", "battery electric",
-
-    # bulgarian
-    "електрически",
-    "електромобил",
-    "електро",
-
-    # tesla
-    "tesla", "model 3", "model y", "model s", "model x", "cybertruck",
-
-    # vw group
-    "id.3", "id.4", "id.5", "id.7", "id buzz", "id. buzz",
-    "e-golf", "e up", "e-up",
-
-    # audi
-    "e-tron", "etron", "q4 e-tron", "q6 e-tron", "q8 e-tron",
-
-    # bmw
-    "i3", "i4", "i5", "i7", "ix", "ix1", "ix2", "ix3",
-
-    # mercedes
-    "eqb", "eqc", "eqe", "eqs", "eqa",
-
-    # hyundai/kia
-    "ioniq 5", "ioniq 6", "kona electric", "ev6", "ev9",
-    "niro ev",
-
-    # renault
-    "zoe", "megane e-tech", "scenic e-tech", "renault 5 e-tech",
-
-    # peugeot/citroen/opel
-    "e-208", "e-2008", "e-308", "e-3008",
-    "e-c4", "e-c4 x",
-    "corsa-e", "astra-e",
-
-    # skoda
-    "enyaq", "elroq",
-
-    # ford
-    "mustang mach-e", "mach e", "f-150 lightning",
-
-    # nissan
-    "leaf", "ariya",
-
-    # others
-    "mg4", "mg zs ev", "byd", "seal", "atto 3", "dolphin",
-    "xpeng", "zeekr", "rivian", "lucid"
-]
 
 HYBRID_KEYWORDS1 = [
     # generic
     "hybrid", "full hybrid", "mild hybrid",
     "phev", "plug-in", "plugin hybrid",
-
     # bulgarian
     "хибрид",
     "пълен хибрид",
@@ -2022,31 +2040,22 @@ HYBRID_KEYWORDS1 = [
     "зареждащ се хибрид",
     "хибриден",
     "меко хибриден",
-
     # toyota systems (VERY important)
     "hsd", "hybrid synergy drive", "ths", "toyota hybrid",
-
     # vw group
     "gte", "tsi hybrid",
-
     # mercedes
     "eq boost", "eq-boost", "eq power",
-
     # bmw
     "xdrive hybrid", "active hybrid",
-
     # renault
     "e-tech hybrid", "e tech",
-
     # stellantis
     "4xe", "hybrid4", "e-hybrid", "plug-in hybrid",
-
     # hyundai/kia
     "tmhev", "hev", "k-hybrid",
-
     # honda
     "i-mmd", "immd", "ehev",
-
     # ford
     "ecoboost hybrid", "mhev"
 ]
@@ -2054,89 +2063,35 @@ HYBRID_KEYWORDS1 = [
 DIESEL_KEYWORDS1 = [
     # generic
     "diesel", "diesel engine",
-
     # bulgarian
     "дизел",
     "дизелов",
     "дизелов",
     "дизелов двигател",
-
     # vw group
     "tdi", "sdi",
-
     # ford
     "tdci", "tddi",
-
     # psa
     "hdi", "bluehdi",
-
     # renault
     "dci",
-
     # mercedes
     "cdi", "bluetec",
-
     # fiat/alfa
     "jtd", "multijet", "mjet",
-
     # toyota
     "d-4d", "d4d",
-
     # kia/hyundai
     "crdi", "crdi diesel", "u2 crdi",
-
     # bmw
      "xdrive d",
-
     # mazda
     "skyactiv-d",
-
     # opel
     "cdti"
 ]
 
-PETROL_KEYWORDS = [
-    # generic
-    "petrol", "gasoline", "gas", "benzine",
-
-    # bulgarian
-    "бензин",
-    "бензинов",
-    "бензинов двигател",
-
-    # vw group
-    "tsi", "tfsi", "fsi", "mpi",
-
-    # ford
-    "ecoboost",
-
-    # psa
-    "vti", "puretech",
-
-    # renault
-    "tce",
-
-    # hyundai/kia
-    "gdi", "tgdi", "mpi",
-
-    # toyota
-    "vvt-i", "vvt i", "vvti", "dual vvt-i", "dual vvt i",
-
-    # mazda
-    "skyactiv-g",
-
-    # honda
-    "vtec", "i-vtec", "ivtec",
-
-    # fiat
-    "fire",
-
-    # bmw
-    # DO NOT use "i" as a keyword—it creates many false positives.
-
-    # mercedes
-    "cgi", "kompressor"
-]
 
 BMW_REGEX = r"\b(?:116|118|120|218|220|320|330|420|520|530|540|740|750|840)i\b"
 
@@ -2147,10 +2102,3 @@ FUEL_SIGNALS = {
     "petrol": PETROL_KEYWORDS
 }
 
-
-
-MOTORCYCLE = []
-Car = []
-LCV = []
-MEDIUM_DUTY_VEHICLES = []
-HEAVY_DUTY_VEHICLES = []

@@ -76,11 +76,13 @@ def classify_fuel(text):
 
 
 def check_for_fuel(text):
-    category_text = text.split(" ")
+    category_text = text.replace("  ", " ").split(" ")
     category_text = [x.lower() for x in category_text]
     # print(category_text)
     for x in category_text:
-
+        if x == "t-gdi":
+            print("111")
+            break
         word = x.strip()
         # print(word)
 
@@ -97,13 +99,18 @@ def check_for_fuel(text):
         if word in ELECTRIC_VINS:
             return "EV"
         if word in ELECTRIC_KEYWORDS:
+            print(f"KW {word, text}")
+
             return  "EV"
         if word in ELECTRIC_CODES:
+            print(f"CODES {word, text}")
             return "EV"
         if word in ELECTRIC_BRANDS:
+            print(f"brands {word, text}")
+
             return "EV"
 
-    return "no fuel ide"
+    return f"no fuel ide {text}"
 
 
 
