@@ -84,14 +84,6 @@ def check_for_fuel(text):
         word = x.strip()
         # print(word)
 
-        if word in ELECTRIC_VINS:
-            return "EV"
-        if word in ELECTRIC_KEYWORDS:
-            return  "EV"
-        if word in ELECTRIC_CODES:
-            return "EV"
-        if word in ELECTRIC_BRANDS:
-            return "EV"
 
         if word in PETROL_KEYWORDS:
             return "petrol"
@@ -101,6 +93,15 @@ def check_for_fuel(text):
             return "diesel"
         if word in GAS_KEYWORDS:
             return "gas/alternative"
+
+        if word in ELECTRIC_VINS:
+            return "EV"
+        if word in ELECTRIC_KEYWORDS:
+            return  "EV"
+        if word in ELECTRIC_CODES:
+            return "EV"
+        if word in ELECTRIC_BRANDS:
+            return "EV"
 
     return "no fuel ide"
 

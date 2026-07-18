@@ -1,5 +1,19 @@
 import re
 
+FUEL_ID = {
+            "бензин/електричество/внг":	"hybrid",
+            "дизел/биодизел":	"diesel",
+            "дизел/електричество":	"hybrid",
+            "diesel":"diesel",
+            "electric":	"EV",
+            "gas":	"gas",
+            "petrol":	"petrol",
+            "petrol/electric":	"hybrid",
+            "petrol/gas":	"petrol/gas",
+            "PHEV (plug-in)":	"hybrid",
+}
+
+
 PETROL_KWORD = {
 
     "generic": {
@@ -1316,9 +1330,14 @@ BEV_MODELS = {
     "enyaq",
     "taycan",
 
+    "ioniq 3"
     "ioniq 5",
     "ioniq 6",
     "ioniq 9",
+    "айоник 3",
+    "айоник 5",
+    "айоник 6",
+    "айоник 9",
 
     "ev3",
     "ev5",
@@ -1402,7 +1421,9 @@ ELECTRIC_CODES  = ["ev", "bev", "eq", "i4", "i5", "ix", "id.4", "i3", "ix1", "ix
                    "atto3", "atto", "bydseal", "byd han", "byd tang", "tang", "dolphin", "sealion",
                    "leapmotor", "t03", "c10", "zeekr", "zeekr001", "zeekrx", "xpeng", "g6", "g9", "p7", "nio", "el6",
                    "et5", "et7", "zoe",
-                   "omoda", "e5", "changan", "skywell", "aion", "maxus", "eDeliver", "seres", "voyah", "free", "lucid",
+                   #"omoda",
+                   #"e5",
+                   "changan", "skywell", "aion", "maxus", "eDeliver", "seres", "voyah", "free", "lucid",
                    "rivian", "r1t", "r1s", "e-rifter"
                    ]
 
@@ -1540,6 +1561,10 @@ PETROL = {
 
 
 HYBRID_KEYWORDS = [
+    "fhev",
+    "(hev)"
+    "ch-r",
+    "цх-р"
     "hybrid",
     "reev",
     "zr-v",

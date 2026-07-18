@@ -24,7 +24,8 @@ def category_handler(record: ESGRecord):
     # FIXME Dict for update: category_by_type = category_check_by_type_id_match(eq_type)
     category_by_description =  category_check_by_type_search(eq_description)
     category_by_weight_class = classify_by_weight(updated_weight)
-    category_by_vin = check_by_partial_vin(eq_vin)
+    if eq_vin and eq_vin!="-":
+        category_by_vin = check_by_partial_vin(eq_vin)
 
     #FIXME - eq_type column is currently off.
 
@@ -122,15 +123,15 @@ def category_check_3rd_stage():
 
 
 def check_by_partial_vin(safe_vin):
-    # vin_partial = safe_vin[:7]
-    # if vin_partial in LCV_VIN:
-    #     return "LgtComrclVeh"
-    # if vin_partial in HGV_VIN:
-    #     return "HvyDutyTruk"
-    # if vin_partial in CAR_VIN:
-    #     return "Car"
-    # if vin_partial in MEDDUTYTRUCK:
-    #     return "MedDutyTruk"
+    vin_partial = safe_vin[:7]
+    if vin_partial in LCV_VIN:
+        return "LgtComrclVeh"
+    if vin_partial in HGV_VIN:
+        return "HvyDutyTruk"
+    if vin_partial in CAR_VIN:
+        return "Car"
+    if vin_partial in MEDDUTYTRUCK:
+        return "MedDutyTruk"
     return ""
 
 def check_by_category(text, vehicle_type):
